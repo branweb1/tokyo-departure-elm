@@ -1,0 +1,12 @@
+/* PROGRESS BAR */
+.outer-bar {
+  width: 300px;
+  border: 1px solid #000;
+}
+
+.inner-bar {
+  transform-origin: left;
+  background-color: green;
+  width: 100%;
+  height: 20px;
+}
