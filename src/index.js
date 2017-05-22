@@ -7,44 +7,55 @@ require('./css/style.css')
 
 const app = Elm.Main.embed(mountNode)
 
+let player
+let done = false
+
 function play() {
-  const player = document.getElementById('audio-player')
+  done = false
+  player = document.getElementById('audio-player')
   player.play()
 }
 
 function pause() {
-  const player = document.getElementById('audio-player')
   player.pause()
 }
 
+function timeupdateListener() {
+  app.ports.progress.send({
+    elapsed: player.currentTime,
+    total: player.duration
+  })
+
+  if (!done) {
+    requestAnimationFrame(timeupdateListener)
+  }
+}
+
 function progress() {
-  const player = document.getElementById('audio-player')
+  player.addEventListener('timeupdate', timeupdateListener, false)
+}
 
-  player.addEventListener('timeupdate', () => {
-    function updateProgress() {
-      requestAnimationFrame(updateProgress)
-
-      app.ports.progress.send({
-        elapsed: player.currentTime,
-        total: player.duration
-      })
-    }
-
-    requestAnimationFrame(updateProgress)
+function endedListener() {
+  app.ports.ended.send({
+    ended: true
   })
 }
 
 function ended() {
-  const player = document.getElementById('audio-player')
+  player.addEventListener('ended', endedListener)
+}
 
-  player.addEventListener('ended', () => {
-    app.ports.ended.send({
-      ended: true
-    })
-  })
+function reset() {
+  if (player) {
+    player.removeEventListener('timeupdate', timeupdateListener)
+    player.removeEventListener('ended', endedListener)
+  }
+
+  done = true
 }
 
 app.ports.playAudio.subscribe(play)
 app.ports.pauseAudio.subscribe(pause)
 app.ports.trackProgress.subscribe(progress)
 app.ports.trackEnded.subscribe(ended)
+app.ports.reset.subscribe(reset)

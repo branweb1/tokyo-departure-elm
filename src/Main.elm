@@ -2,14 +2,18 @@ port module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
+import Char
 
 
 type alias Model =
     { stations : List Station
     , progress : Progress
     , playStatus : PlayStatus
+    , query : String
+    , selected : Maybe Int
+    , errorMsg : Maybe String
     }
 
 
@@ -17,6 +21,7 @@ type PlayStatus
     = Playing
     | Paused
     | Ended
+    | Unstarted
 
 
 type alias Progress =
@@ -26,6 +31,10 @@ type alias Progress =
 type Melody
     = AstroBoyV2
     | Ebisu
+    | Harajuku
+    | SH3
+    | Babble
+    | CieloEstrellado
 
 
 type alias Station =
@@ -48,6 +57,31 @@ stations =
       , id = 1
       , blurb = Nothing
       }
+    , { melody = Harajuku
+      , displayName = "Harajuku"
+      , id = 3
+      , blurb = Nothing
+      }
+    , { melody = SH3
+      , displayName = "Tokyo"
+      , id = 4
+      , blurb = Nothing
+      }
+    , { melody = Babble
+      , displayName = "Mejiro"
+      , id = 5
+      , blurb = Nothing
+      }
+    , { melody = Babble
+      , displayName = "Kanda"
+      , id = 6
+      , blurb = Nothing
+      }
+    , { melody = CieloEstrellado
+      , displayName = "Gotanda"
+      , id = 7
+      , blurb = Nothing
+      }
     ]
 
 
@@ -55,7 +89,10 @@ initialModel : Model
 initialModel =
     { stations = stations
     , progress = { elapsed = 0.0, total = 0.0 }
-    , playStatus = Paused
+    , playStatus = Unstarted
+    , query = ""
+    , selected = Nothing
+    , errorMsg = Nothing
     }
 
 
@@ -72,11 +109,26 @@ melodyToFile melody =
         Ebisu ->
             "ebisu.mp3"
 
+        Harajuku ->
+            "harajuku_a.mp3"
+
+        SH3 ->
+            "sh-3.mp3"
+
+        Babble ->
+            "babble.mp3"
+
+        CieloEstrellado ->
+            "cielo_estrellado.mp3"
+
 
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of
         Ok resp ->
-            SetProgress resp
+            if isNaN resp.total || isNaN resp.elapsed then
+                SetProgress initialModel.progress
+            else
+                SetProgress resp
 
         Err err ->
             NoOp
@@ -102,6 +154,20 @@ endedDecoder =
         (Decode.field "ended" Decode.bool)
 
 
+validateQuery : String -> Result String String
+validateQuery query =
+    let
+        isLetter a =
+            Char.isUpper a || Char.isLower a
+    in
+        case String.all isLetter query of
+            True ->
+                Ok query
+
+            False ->
+                Err "Search can only contain letters"
+
+
 
 -- messages
 
@@ -111,6 +177,8 @@ type Msg
     | Pause
     | SetProgress Progress
     | SetEnded
+    | SetQuery String
+    | SetSelected (Maybe Int)
     | NoOp
 
 
@@ -136,12 +204,19 @@ port progress : (Decode.Value -> msg) -> Sub msg
 port ended : (Decode.Value -> msg) -> Sub msg
 
 
+port reset : () -> Cmd msg
+
+
 
 -- update
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    -- let
+    --     _ =
+    --         Debug.log "" model
+    -- in
     case msg of
         Play ->
             ( { model | playStatus = Playing }, Cmd.batch [ playAudio (), trackProgress (), trackEnded () ] )
@@ -157,6 +232,17 @@ update msg model =
 
         SetEnded ->
             ( { model | playStatus = Ended }, Cmd.none )
+
+        SetQuery query ->
+            case validateQuery query of
+                Ok query ->
+                    ( { model | query = query, errorMsg = Nothing }, Cmd.none )
+
+                Err msg ->
+                    ( { model | errorMsg = Just msg }, Cmd.none )
+
+        SetSelected mid ->
+            ( { model | selected = mid, progress = initialModel.progress, playStatus = Unstarted }, reset () )
 
 
 
@@ -193,6 +279,9 @@ playButton playStatus =
         Ended ->
             button [ onClick Play ] [ text "replay" ]
 
+        Unstarted ->
+            button [ onClick Play ] [ text "play" ]
+
 
 melodyDetails : Progress -> String -> Html Msg
 melodyDetails progress filename =
@@ -214,11 +303,81 @@ melodyDetails progress filename =
             ]
 
 
-view : Model -> Html Msg
-view model =
-    div []
-        (List.map
+alreadySelected : Maybe Int -> Int -> Bool
+alreadySelected selectedId stationId =
+    Maybe.map ((==) stationId) selectedId
+        |> Maybe.withDefault False
+
+
+stationList : String -> Maybe Int -> List Station -> Html Msg
+stationList query selected stations =
+    filterStations query stations
+        |> List.map
             (\station ->
+                let
+                    currentlySelected =
+                        alreadySelected selected station.id
+
+                    handler =
+                        if currentlySelected == True then
+                            NoOp
+                        else
+                            SetSelected <| Just station.id
+
+                    className =
+                        if currentlySelected == True then
+                            "underlined"
+                        else
+                            ""
+                in
+                    li [ onClick handler, class className ]
+                        [ text station.displayName ]
+            )
+        |> ul []
+
+
+filterStations : String -> List Station -> List Station
+filterStations query stations =
+    List.filter
+        (\station ->
+            String.startsWith (String.toLower query) (String.toLower station.displayName)
+        )
+        stations
+
+
+getById : List Station -> Int -> Maybe Station
+getById list id =
+    List.filter (\item -> item.id == id) list
+        |> List.head
+
+
+errorMessage : Maybe String -> Html Msg
+errorMessage msg =
+    case msg of
+        Just msg ->
+            div [] [ text msg ]
+
+        Nothing ->
+            div [] []
+
+
+sidebar : Model -> Html Msg
+sidebar model =
+    nav []
+        [ input [ type_ "text", onInput SetQuery ] []
+        , errorMessage model.errorMsg
+        , stationList model.query model.selected model.stations
+        ]
+
+
+stationDetails model =
+    let
+        station =
+            model.selected
+                |> Maybe.andThen (getById model.stations)
+    in
+        case station of
+            Just station ->
                 section []
                     [ playButton model.playStatus
                     , progressBar model.progress
@@ -231,9 +390,17 @@ view model =
                             ]
                         ]
                     ]
-            )
-            model.stations
-        )
+
+            Nothing ->
+                section [] []
+
+
+view : Model -> Html Msg
+view model =
+    div []
+        [ sidebar model
+        , stationDetails model
+        ]
 
 
 
