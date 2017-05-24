@@ -353,12 +353,7 @@ getById list id =
 
 errorMessage : Maybe String -> Html Msg
 errorMessage msg =
-    case msg of
-        Just msg ->
-            div [] [ text msg ]
-
-        Nothing ->
-            div [] []
+    div [] [ text <| Maybe.withDefault "" msg ]
 
 
 sidebar : Model -> Html Msg

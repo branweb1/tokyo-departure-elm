@@ -39,6 +39,12 @@ let myLoaders = [
     test: /\.elm$/,
     exclude: [/elm-stuff/, /node_modules/],
     loader: 'elm-webpack-loader?verbose=true&warn=true'
+  },
+  {
+    test: /index\.js$/,
+    exclude: [/node_modues/, /elm-stuff/],
+    include: [/src/],
+    loader: 'babel-loader'
   }
 ]
 
