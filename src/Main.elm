@@ -5,6 +5,8 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode as Decode
 import Char
+import UrlParser as Url exposing (Parser, (</>))
+import Navigation exposing (Location)
 
 
 type alias Model =
@@ -12,8 +14,8 @@ type alias Model =
     , progress : Progress
     , playStatus : PlayStatus
     , query : String
-    , selected : Maybe Int
     , errorMsg : Maybe String
+    , route : Route
     }
 
 
@@ -85,14 +87,14 @@ stations =
     ]
 
 
-initialModel : Model
-initialModel =
+initialModel : Route -> Model
+initialModel route =
     { stations = stations
     , progress = { elapsed = 0.0, total = 0.0 }
     , playStatus = Unstarted
     , query = ""
-    , selected = Nothing
     , errorMsg = Nothing
+    , route = route
     }
 
 
@@ -126,7 +128,7 @@ decodeResponse json =
     case Decode.decodeValue progressDecoder json of
         Ok resp ->
             if isNaN resp.total || isNaN resp.elapsed then
-                SetProgress initialModel.progress
+                SetProgress { elapsed = 0.0, total = 0.0 }
             else
                 SetProgress resp
 
@@ -169,6 +171,56 @@ validateQuery query =
 
 
 
+-- routing
+
+
+route : Parser (Route -> a) a
+route =
+    Url.oneOf
+        [ Url.map Home (Url.top)
+        , Url.map StationDetails (Url.s "stations" </> Url.string)
+        , Url.map Stations (Url.s "stations")
+        ]
+
+
+type Route
+    = Home
+    | Stations
+    | StationDetails String
+    | NotFound
+
+
+routeToString : Route -> String
+routeToString route =
+    let
+        pieces =
+            case route of
+                Home ->
+                    []
+
+                Stations ->
+                    [ "stations" ]
+
+                StationDetails id ->
+                    [ "stations", id ]
+
+                NotFound ->
+                    [ "blah" ]
+    in
+        "#/" ++ (String.join "/" pieces)
+
+
+parseLocation : Location -> Route
+parseLocation location =
+    case (Url.parseHash route location) of
+        Just route ->
+            route
+
+        Nothing ->
+            NotFound
+
+
+
 -- messages
 
 
@@ -178,8 +230,8 @@ type Msg
     | SetProgress Progress
     | SetEnded
     | SetQuery String
-    | SetSelected (Maybe Int)
     | NoOp
+    | ChangeLocation Location
 
 
 
@@ -241,8 +293,12 @@ update msg model =
                 Err msg ->
                     ( { model | errorMsg = Just msg }, Cmd.none )
 
-        SetSelected mid ->
-            ( { model | selected = mid, progress = initialModel.progress, playStatus = Unstarted }, reset () )
+        ChangeLocation location ->
+            let
+                route =
+                    parseLocation location
+            in
+                ( { model | route = route, progress = { elapsed = 0.0, total = 0.0 }, playStatus = Unstarted }, reset () )
 
 
 
@@ -303,35 +359,13 @@ melodyDetails progress filename =
             ]
 
 
-alreadySelected : Maybe Int -> Int -> Bool
-alreadySelected selectedId stationId =
-    Maybe.map ((==) stationId) selectedId
-        |> Maybe.withDefault False
-
-
-stationList : String -> Maybe Int -> List Station -> Html Msg
-stationList query selected stations =
+stationList : String -> Route -> List Station -> Html Msg
+stationList query current stations =
     filterStations query stations
         |> List.map
             (\station ->
-                let
-                    currentlySelected =
-                        alreadySelected selected station.id
-
-                    handler =
-                        if currentlySelected == True then
-                            NoOp
-                        else
-                            SetSelected <| Just station.id
-
-                    className =
-                        if currentlySelected == True then
-                            "underlined"
-                        else
-                            ""
-                in
-                    li [ onClick handler, class className ]
-                        [ text station.displayName ]
+                li []
+                    [ a (routeAttrs current (StationDetails (toString station.id)) "underlined") [ text station.displayName ] ]
             )
         |> ul []
 
@@ -361,15 +395,19 @@ sidebar model =
     nav []
         [ input [ type_ "text", onInput SetQuery ] []
         , errorMessage model.errorMsg
-        , stationList model.query model.selected model.stations
+        , stationList model.query model.route model.stations
         ]
 
 
-stationDetails model =
+stationDetails model stationId =
     let
         station =
-            model.selected
-                |> Maybe.andThen (getById model.stations)
+            case String.toInt stationId of
+                Ok idNum ->
+                    getById model.stations idNum
+
+                Err err ->
+                    Nothing
     in
         case station of
             Just station ->
@@ -390,12 +428,71 @@ stationDetails model =
                 section [] []
 
 
+activeLink currentRoute linkRoute className =
+    if linkRoute == currentRoute then
+        class className
+    else
+        class ""
+
+
+routeAttrs currentRoute linkRoute className =
+    [ href (routeToString linkRoute), (activeLink currentRoute linkRoute className) ]
+
+
+footerLinks : Model -> Html Msg
+footerLinks model =
+    footer
+        []
+        [ a (routeAttrs model.route Stations "active") [ text "stations" ]
+        , a (routeAttrs model.route (StationDetails "1") "active") [ text "station" ]
+        , a (routeAttrs model.route Home "active") [ text "home" ]
+        , a (routeAttrs model.route NotFound "active") [ text "404 page" ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     div []
         [ sidebar model
-        , stationDetails model
+        , page model
+        , footerLinks model
         ]
+
+
+page : Model -> Html Msg
+page model =
+    case model.route of
+        Home ->
+            homePage model
+
+        Stations ->
+            stationsPage model
+
+        StationDetails id ->
+            stationDetailsPage model id
+
+        NotFound ->
+            notFoundPage
+
+
+notFoundPage : Html Msg
+notFoundPage =
+    div [] [ text "404 :-(" ]
+
+
+stationDetailsPage : Model -> String -> Html Msg
+stationDetailsPage model stationId =
+    stationDetails model stationId
+
+
+stationsPage : Model -> Html Msg
+stationsPage model =
+    div [] [ text "Nothing here for now" ]
+
+
+homePage : Model -> Html Msg
+homePage model =
+    div [] [ text "welcome home!" ]
 
 
 
@@ -414,14 +511,18 @@ subscriptions model =
 -- program
 
 
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, Cmd.none )
+init : Location -> ( Model, Cmd Msg )
+init location =
+    let
+        route =
+            parseLocation location
+    in
+        ( initialModel route, Cmd.none )
 
 
 main : Program Never Model Msg
 main =
-    program
+    Navigation.program ChangeLocation
         { init = init
         , view = view
         , update = update

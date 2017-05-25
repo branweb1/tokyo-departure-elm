@@ -14,3 +14,13 @@
 .underlined {
   text-decoration: underline;
 }
+
+/* LINKS */
+a {
+  text-decoration: none;
+}
+
+a.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
