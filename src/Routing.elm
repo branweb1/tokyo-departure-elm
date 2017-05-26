@@ -37,7 +37,7 @@ routeToString route =
                     [ "stations", id ]
 
                 NotFound ->
-                    [ "blah" ]
+                    [ "notfound" ]
     in
         "#/" ++ (String.join "/" pieces)
 

@@ -1,6 +1,6 @@
 const Elm = require('./Main.elm')
 
-const mountNode = document.getElementById('main')
+const mountNode = document.getElementById('app-container')
 
 require('./css/reset.css')
 require('./css/style.css')

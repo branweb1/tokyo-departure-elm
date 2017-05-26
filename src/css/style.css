@@ -24,3 +24,44 @@ a.active {
   font-weight: bold;
   text-decoration: underline;
 }
+
+/* TYPOGRAPHY */
+body {
+  font-size: 100%;
+  font-family: sans-serif;
+}
+
+/* LAYOUT */
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  border: 1px dashed blue;
+}
+
+#app-body {
+  flex: 1;
+  display: flex;
+}
+
+#app-body main {
+  flex: 1;
+}
+
+#app-body nav {
+  flex: 0 0 12em;
+  border-right: 1px solid #ddd;
+  text-align: right;
+  padding-right: 1.2em;
+  margin-right: 1.2em;
+}
+
+header, footer {
+  text-align: center;
+}

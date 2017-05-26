@@ -2,6 +2,7 @@ module View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Attributes.Aria exposing (role)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Progress, PlayStatus(..), Model, Station)
 import Messages exposing (..)
@@ -96,8 +97,9 @@ errorMessage msg =
 
 sidebar : Model -> Html Msg
 sidebar model =
-    nav []
-        [ input [ type_ "text", onInput SetQuery ] []
+    nav [ role "navigation" ]
+        [ h2 [] [ text "Stations" ]
+        , input [ type_ "text", role "search", onInput SetQuery ] []
         , errorMessage model.errorMsg
         , stationList model.query model.route model.stations
         ]
@@ -116,7 +118,7 @@ stationDetails model stationId =
     in
         case station of
             Just station ->
-                section []
+                main_ [ role "main" ]
                     [ playButton model.playStatus
                     , progressBar model.progress
                     , melodyDetails model.progress (melodyToFile station.melody)
@@ -130,7 +132,7 @@ stationDetails model stationId =
                     ]
 
             Nothing ->
-                section [] []
+                main_ [ role "main" ] []
 
 
 footerLinks : Model -> Html Msg
@@ -146,9 +148,12 @@ footerLinks model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ sidebar model
-        , page model
+    div [ id "app" ]
+        [ header [ role "banner" ] [ text "header text" ]
+        , section [ id "app-body" ]
+            [ sidebar model
+            , page model
+            ]
         , footerLinks model
         ]
 
@@ -160,7 +165,7 @@ page model =
             homePage model
 
         Stations ->
-            stationsPage model
+            homePage model
 
         StationDetails id ->
             stationDetailsPage model id
@@ -171,7 +176,7 @@ page model =
 
 notFoundPage : Html Msg
 notFoundPage =
-    div [] [ text "404 :-(" ]
+    main_ [ role "main" ] [ text "404 :-(" ]
 
 
 stationDetailsPage : Model -> String -> Html Msg
@@ -179,11 +184,6 @@ stationDetailsPage model stationId =
     stationDetails model stationId
 
 
-stationsPage : Model -> Html Msg
-stationsPage model =
-    div [] [ text "Nothing here for now" ]
-
-
 homePage : Model -> Html Msg
 homePage model =
-    div [] [ text "welcome home!" ]
+    main_ [ role "main" ] [ text "welcome home!" ]
