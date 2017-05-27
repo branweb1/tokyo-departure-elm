@@ -65,3 +65,20 @@ body,
 header, footer {
   text-align: center;
 }
+
+/* SIDEBAR */
+nav label {
+  display: block;
+}
+
+/* ICONS */
+.icon {
+  fill: green;
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+}
+
+.icon:hover{
+  fill: red;
+}

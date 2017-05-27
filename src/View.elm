@@ -8,6 +8,7 @@ import Model exposing (Progress, PlayStatus(..), Model, Station)
 import Messages exposing (..)
 import Routing exposing (Route(..), routeAttrs)
 import Helpers exposing (melodyToFile)
+import Icons exposing (playIcon, pauseIcon)
 
 
 progressBar : Progress -> Html Msg
@@ -28,20 +29,20 @@ progressBar progress =
             ]
 
 
-playButton : PlayStatus -> Html Msg
-playButton playStatus =
+controlButton : PlayStatus -> Html Msg
+controlButton playStatus =
     case playStatus of
         Paused ->
-            button [ onClick Play ] [ text "play" ]
+            span [ onClick Play ] [ playIcon ]
 
         Playing ->
-            button [ onClick Pause ] [ text "pause" ]
+            span [ onClick Pause ] [ pauseIcon ]
 
         Ended ->
-            button [ onClick Play ] [ text "replay" ]
+            span [ onClick Play ] [ playIcon ]
 
         Unstarted ->
-            button [ onClick Play ] [ text "play" ]
+            span [ onClick Play ] [ playIcon ]
 
 
 melodyDetails : Progress -> String -> Html Msg
@@ -98,8 +99,8 @@ errorMessage msg =
 sidebar : Model -> Html Msg
 sidebar model =
     nav [ role "navigation" ]
-        [ h2 [] [ text "Stations" ]
-        , input [ type_ "text", role "search", onInput SetQuery ] []
+        [ label [ Html.Attributes.for "search" ] [ text "Stations" ]
+        , input [ type_ "text", id "search", role "search", placeholder "Search", onInput SetQuery ] []
         , errorMessage model.errorMsg
         , stationList model.query model.route model.stations
         ]
@@ -119,7 +120,7 @@ stationDetails model stationId =
         case station of
             Just station ->
                 main_ [ role "main" ]
-                    [ playButton model.playStatus
+                    [ controlButton model.playStatus
                     , progressBar model.progress
                     , melodyDetails model.progress (melodyToFile station.melody)
                     , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
