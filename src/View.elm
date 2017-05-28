@@ -83,8 +83,14 @@ stationList query current stations =
     filterStations query stations
         |> List.map
             (\station ->
-                li []
-                    [ a (routeAttrs current (StationDetails (toString station.id)) "underlined") [ text station.displayName ] ]
+                let
+                    attributes =
+                        [ onClick (GetBlurb station.blurb) ] ++ (routeAttrs current (StationDetails (toString station.id)) "underlined")
+                in
+                    li []
+                        [ a attributes
+                            [ text station.displayName ]
+                        ]
             )
         |> ul []
 

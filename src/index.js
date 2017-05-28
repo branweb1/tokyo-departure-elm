@@ -66,7 +66,7 @@ function loadMarkdownFile(file) {
     if (req.status >= 200 && req.status < 400) {
       app.ports.receiveMarkdownFile.send(req.responseText)
     } else {
-      console.log('error status')
+      console.log('error')
     }
   }
 
@@ -76,6 +76,7 @@ function loadMarkdownFile(file) {
 
   req.send()
 }
+
 app.ports.playAudio.subscribe(play)
 app.ports.pauseAudio.subscribe(pause)
 app.ports.trackProgress.subscribe(progress)

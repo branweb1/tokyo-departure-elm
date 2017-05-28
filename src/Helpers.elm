@@ -47,7 +47,7 @@ progressDecoder =
 
 
 decodedEndedResponse json =
-    case Decode.decodeValue endedDecoder json of
+    case Decode.decodeValue (Decode.field "ended" Decode.bool) json of
         Ok resp ->
             SetEnded
 
@@ -55,22 +55,13 @@ decodedEndedResponse json =
             NoOp
 
 
-endedDecoder =
-    Decode.map identity
-        (Decode.field "ended" Decode.bool)
-
-
 decodeMarkdownFile str =
-    case Decode.decodeValue markdownFileDecoder str of
+    case Decode.decodeValue Decode.string str of
         Ok text ->
             SetBlurb (Just text)
 
         Err err ->
             SetBlurb (Nothing)
-
-
-markdownFileDecoder =
-    Decode.map identity (Decode.string)
 
 
 validateQuery : String -> Result String String

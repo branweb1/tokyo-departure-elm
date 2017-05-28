@@ -13,3 +13,4 @@ type Msg
     | NoOp
     | ChangeLocation Location
     | SetBlurb (Maybe String)
+    | GetBlurb (Maybe String)
