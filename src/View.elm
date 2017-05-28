@@ -175,7 +175,7 @@ view : Model -> Html Msg
 view model =
     div [ id "app" ]
         [ header [ role "banner" ]
-            [ div [ class "logo-container" ] [ text "logo here" ]
+            [ div [ class "logo-container" ] [ a [ href "#/" ] [ text "logo here" ] ]
             , div [ class "page-title" ] [ text "banner-text" ]
             ]
         , section [ id "app-body" ]
