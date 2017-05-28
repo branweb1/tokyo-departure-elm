@@ -47,6 +47,7 @@ function ended() {
 
 function reset() {
   if (player) {
+    player.load()
     player.removeEventListener('timeupdate', timeupdateListener)
     player.removeEventListener('ended', endedListener)
   }
