@@ -9,6 +9,7 @@ import Messages exposing (..)
 import Routing exposing (Route(..), routeAttrs)
 import Helpers exposing (melodyToFile)
 import Icons exposing (playIcon, pauseIcon)
+import Markdown
 
 
 progressBar : Progress -> Html Msg
@@ -133,6 +134,7 @@ stationDetails model stationId =
             Just station ->
                 main_ [ role "main" ]
                     [ h2 [] [ text station.displayName ]
+                    , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
                     , progressBar model.progress
                     , melodyTime model.progress (melodyToFile station.melody)
                     , div [] [ controlButton model.playStatus ]

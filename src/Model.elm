@@ -10,6 +10,7 @@ type alias Model =
     , query : String
     , errorMsg : Maybe String
     , route : Route
+    , blurb : Maybe String
     }
 
 
@@ -46,7 +47,7 @@ stations =
     [ { melody = AstroBoyV2
       , displayName = "Takada-no-Baba"
       , id = 0
-      , blurb = Just "blah blah"
+      , blurb = Just "takada-no-baba.md"
       }
     , { melody = Ebisu
       , displayName = "Ebisu"
@@ -61,7 +62,7 @@ stations =
     , { melody = SH3
       , displayName = "Tokyo"
       , id = 4
-      , blurb = Nothing
+      , blurb = Just "tokyo.md"
       }
     , { melody = Babble
       , displayName = "Mejiro"
@@ -89,4 +90,5 @@ initialModel route =
     , query = ""
     , errorMsg = Nothing
     , route = route
+    , blurb = Nothing
     }

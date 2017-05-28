@@ -3,7 +3,7 @@ module Helpers exposing (..)
 import Json.Decode as Decode
 import Char
 import Model exposing (Melody(..), Progress)
-import Messages exposing (Msg(SetProgress, SetEnded, NoOp))
+import Messages exposing (Msg(SetProgress, SetEnded, NoOp, SetBlurb))
 
 
 melodyToFile : Melody -> String
@@ -58,6 +58,19 @@ decodedEndedResponse json =
 endedDecoder =
     Decode.map identity
         (Decode.field "ended" Decode.bool)
+
+
+decodeMarkdownFile str =
+    case Decode.decodeValue markdownFileDecoder str of
+        Ok text ->
+            SetBlurb (Just text)
+
+        Err err ->
+            SetBlurb (Nothing)
+
+
+markdownFileDecoder =
+    Decode.map identity (Decode.string)
 
 
 validateQuery : String -> Result String String

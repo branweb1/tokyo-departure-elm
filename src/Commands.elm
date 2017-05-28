@@ -22,3 +22,9 @@ port ended : (Decode.Value -> msg) -> Sub msg
 
 
 port reset : () -> Cmd msg
+
+
+port loadMarkdownFile : String -> Cmd msg
+
+
+port receiveMarkdownFile : (Decode.Value -> msg) -> Sub msg

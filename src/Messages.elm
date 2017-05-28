@@ -12,3 +12,4 @@ type Msg
     | SetQuery String
     | NoOp
     | ChangeLocation Location
+    | SetBlurb (Maybe String)
