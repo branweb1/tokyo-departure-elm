@@ -132,7 +132,8 @@ stationDetails model stationId =
         case station of
             Just station ->
                 main_ [ role "main" ]
-                    [ progressBar model.progress
+                    [ h2 [] [ text station.displayName ]
+                    , progressBar model.progress
                     , melodyTime model.progress (melodyToFile station.melody)
                     , div [] [ controlButton model.playStatus ]
                     , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
