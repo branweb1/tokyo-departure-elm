@@ -45,24 +45,36 @@ controlButton playStatus =
             span [ onClick Play ] [ playIcon ]
 
 
-melodyDetails : Progress -> String -> Html Msg
-melodyDetails progress filename =
+melodyTime : Progress -> String -> Html Msg
+melodyTime progress filename =
     let
+        timeFormat str =
+            case (String.length str) of
+                1 ->
+                    "00:0" ++ str
+
+                _ ->
+                    "00:" ++ str
+
         elapsedTime =
             round progress.elapsed
                 |> toString
+                |> timeFormat
 
         totalTime =
             round progress.total
                 |> toString
-
-        timeString =
-            elapsedTime ++ "/" ++ totalTime
+                |> timeFormat
     in
-        div []
-            [ span [] [ text <| filename ]
-            , span [] [ text timeString ]
-            ]
+        case ( elapsedTime, totalTime ) of
+            ( "00:00", "00:00" ) ->
+                div [ class "time" ] []
+
+            _ ->
+                div [ class "time cf" ]
+                    [ span [ class "time-elapsed" ] [ text elapsedTime ]
+                    , span [ class "time-total" ] [ text totalTime ]
+                    ]
 
 
 stationList : String -> Route -> List Station -> Html Msg
@@ -120,9 +132,9 @@ stationDetails model stationId =
         case station of
             Just station ->
                 main_ [ role "main" ]
-                    [ controlButton model.playStatus
-                    , progressBar model.progress
-                    , melodyDetails model.progress (melodyToFile station.melody)
+                    [ progressBar model.progress
+                    , melodyTime model.progress (melodyToFile station.melody)
+                    , div [] [ controlButton model.playStatus ]
                     , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
                         [ p []
                             [ text "Download "
