@@ -16,7 +16,9 @@ update msg model =
     -- in
     case msg of
         Play ->
-            ( { model | playStatus = Playing }, Cmd.batch [ playAudio (), trackProgress (), trackEnded () ] )
+            ( { model | playStatus = Playing }
+            , Cmd.batch [ playAudio (), trackProgress (), trackEnded () ]
+            )
 
         Pause ->
             ( { model | playStatus = Paused }, pauseAudio () )
@@ -54,4 +56,11 @@ update msg model =
                 route =
                     parseLocation location
             in
-                ( { model | route = route, progress = { elapsed = 0.0, total = 0.0 }, playStatus = Unstarted, blurb = Nothing }, reset () )
+                ( { model
+                    | route = route
+                    , progress = { elapsed = 0.0, total = 0.0 }
+                    , playStatus = Unstarted
+                    , blurb = Nothing
+                  }
+                , reset ()
+                )

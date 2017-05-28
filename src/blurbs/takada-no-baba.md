@@ -1,2 +1,1 @@
-## Takada-no-Baba
-It's astro-boy.
+Calling Markdown.toHtml parses the whole block, so try not to call it for no reason. In the content example above we only have to parse the text once, but if we put it in a function we may be doing a lot of unnecessary parsing

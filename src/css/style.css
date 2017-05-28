@@ -1,4 +1,8 @@
-/* PROGRESS BAR */
+/* AUDIO CONTROLS */
+.audio-player-controls {
+  text-align: center;
+}
+
 .outer-bar {
   width: 300px;
   border: 1px solid #000;
@@ -19,6 +23,7 @@
 .time {
   height: 20px;
   width: 300px;
+  display: inline-block;
 }
 
 .time-total {
@@ -26,7 +31,7 @@
 }
 
 .time-elapsed {
-  flat: left;
+  float: left;
 }
 
 /* LINKS */
@@ -76,13 +81,35 @@ body,
   margin-right: 1.2em;
 }
 
-header, footer {
+footer {
   text-align: center;
 }
 
 /* SIDEBAR */
 nav label {
   display: block;
+}
+
+/* HEADER */
+header {
+  display: flex;
+}
+
+.page-title {
+  flex: 1;
+  text-align: center;
+  padding-top: 45px;
+}
+
+.logo-container {
+  flex: 0 0 12em;
+  font-size: 1rem;
+  height: 100px;
+  margin-right: 1.2em;
+  border-right: 1px solid #ddd;
+  vertical-align: bottom;
+  text-align: center;
+  padding-top: 45px;
 }
 
 /* ICONS */

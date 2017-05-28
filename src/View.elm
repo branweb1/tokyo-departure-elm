@@ -141,9 +141,12 @@ stationDetails model stationId =
                 main_ [ role "main" ]
                     [ h2 [] [ text station.displayName ]
                     , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
-                    , progressBar model.progress
-                    , melodyTime model.progress (melodyToFile station.melody)
-                    , div [] [ controlButton model.playStatus ]
+                    , div [ class "audio-player-controls" ]
+                        [ progressBar model.progress
+                        , br [] []
+                        , melodyTime model.progress (melodyToFile station.melody)
+                        , div [] [ controlButton model.playStatus ]
+                        ]
                     , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
                         [ p []
                             [ text "Download "
@@ -171,7 +174,10 @@ footerLinks model =
 view : Model -> Html Msg
 view model =
     div [ id "app" ]
-        [ header [ role "banner" ] [ text "header text" ]
+        [ header [ role "banner" ]
+            [ div [ class "logo-container" ] [ text "logo here" ]
+            , div [ class "page-title" ] [ text "banner-text" ]
+            ]
         , section [ id "app-body" ]
             [ sidebar model
             , page model
