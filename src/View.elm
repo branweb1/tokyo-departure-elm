@@ -66,16 +66,16 @@ melodyTime progress filename =
             round progress.total
                 |> toString
                 |> timeFormat
+
+        timeString =
+            elapsedTime ++ "/" ++ totalTime
     in
         case ( elapsedTime, totalTime ) of
             ( "00:00", "00:00" ) ->
-                div [ class "time" ] []
+                span [] []
 
             _ ->
-                div [ class "time cf" ]
-                    [ span [ class "time-elapsed" ] [ text elapsedTime ]
-                    , span [ class "time-total" ] [ text totalTime ]
-                    ]
+                span [ class "time" ] [ text timeString ]
 
 
 stationList : String -> Route -> List Station -> Html Msg
@@ -140,13 +140,12 @@ stationDetails model stationId =
             Just station ->
                 main_ [ role "main" ]
                     [ h2 [] [ text station.displayName ]
-                    , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
                     , div [ class "audio-player-controls" ]
-                        [ progressBar model.progress
-                        , br [] []
+                        [ controlButton model.playStatus
+                        , progressBar model.progress
                         , melodyTime model.progress (melodyToFile station.melody)
-                        , div [] [ controlButton model.playStatus ]
                         ]
+                    , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
                     , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
                         [ p []
                             [ text "Download "

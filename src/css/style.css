@@ -1,6 +1,11 @@
 /* AUDIO CONTROLS */
 .audio-player-controls {
-  text-align: center;
+  text-align: left;
+  margin-bottom: 1em;
+}
+
+.audio-player-controls > * {
+  margin-right: 1em;
 }
 
 .outer-bar {
@@ -8,6 +13,8 @@
   border: 1px solid #000;
   display: inline-block;
   background-color: rgba(0,0,0,0.2);
+  vertical-align: top;
+  margin-top: 10px;
 }
 
 .inner-bar {
@@ -18,17 +25,9 @@
 }
 
 .time {
-  height: 20px;
-  width: 300px;
   display: inline-block;
-}
-
-.time-total {
-  float: right;
-}
-
-.time-elapsed {
-  float: left;
+  margin-top: 10px;
+  vertical-align: top;
 }
 
 /* LINKS */
@@ -161,8 +160,8 @@ main p {
 .icon {
   fill: green;
   cursor: pointer;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
 }
 
 .icon:hover{
