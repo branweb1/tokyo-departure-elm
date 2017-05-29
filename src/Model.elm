@@ -32,6 +32,11 @@ type Melody
     | SH3
     | Babble
     | CieloEstrellado
+    | BellB
+    | BabblingBrook
+    | Twilight
+    | WaterCrown
+    | SF1
 
 
 type alias Station =
@@ -52,12 +57,12 @@ stations =
     , { melody = Ebisu
       , displayName = "Ebisu"
       , id = 1
-      , blurb = Nothing
+      , blurb = Just "ebisu.md"
       }
     , { melody = Harajuku
       , displayName = "Harajuku"
       , id = 3
-      , blurb = Nothing
+      , blurb = Just "harajuku.md"
       }
     , { melody = SH3
       , displayName = "Tokyo"
@@ -77,6 +82,31 @@ stations =
     , { melody = CieloEstrellado
       , displayName = "Gotanda"
       , id = 7
+      , blurb = Nothing
+      }
+    , { melody = BellB
+      , displayName = "Ueno"
+      , id = 8
+      , blurb = Nothing
+      }
+    , { melody = BabblingBrook
+      , displayName = "Akihabara"
+      , id = 9
+      , blurb = Nothing
+      }
+    , { melody = Twilight
+      , displayName = "Shinjuku"
+      , id = 10
+      , blurb = Nothing
+      }
+    , { melody = WaterCrown
+      , displayName = "Meguro"
+      , id = 11
+      , blurb = Nothing
+      }
+    , { melody = SF1
+      , displayName = "Ōsaki"
+      , id = 12
       , blurb = Nothing
       }
     ]

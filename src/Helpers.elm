@@ -27,6 +27,21 @@ melodyToFile melody =
         CieloEstrellado ->
             "cielo_estrellado.mp3"
 
+        BellB ->
+            "bell_b.mp3"
+
+        BabblingBrook ->
+            "babbling_brook_v2.mp3"
+
+        Twilight ->
+            "twilight.mp3"
+
+        WaterCrown ->
+            "water_crown.mp3"
+
+        SF1 ->
+            "sf-1.mp3"
+
 
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of

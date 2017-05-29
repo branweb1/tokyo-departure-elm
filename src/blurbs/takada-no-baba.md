@@ -1,1 +1,1 @@
-Calling Markdown.toHtml parses the whole block, so try not to call it for no reason. In the content example above we only have to parse the text once, but if we put it in a function we may be doing a lot of unnecessary parsing
+This neightborhood stands on what was once a horseback-riding ground (or *baba*) for the shogun. It is the "birthplace" of Astro Boy, a fictional character who first appeared in a 1952 manga by Osamu Tezuka. The manga was subsequently adapted into television show, the theme of which serves as the departure melody for Takada-no-baba station.  

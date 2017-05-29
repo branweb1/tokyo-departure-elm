@@ -57,6 +57,13 @@ p {
   margin-bottom: 1em;
 }
 
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: 600;
+}
 /* LAYOUT */
 html,
 body,
