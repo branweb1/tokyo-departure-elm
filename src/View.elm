@@ -81,6 +81,7 @@ melodyTime progress filename =
 stationList : String -> Route -> List Station -> Html Msg
 stationList query current stations =
     filterStations query stations
+        |> List.sortBy (\station -> station.displayName)
         |> List.map
             (\station ->
                 let
