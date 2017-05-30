@@ -65,8 +65,15 @@ strong {
   font-weight: 600;
 }
 /* LAYOUT */
-html,
-body,
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  border: 1px dashed blue;
+}
+
 #app {
   height: 100%;
   width: 100%;
@@ -161,6 +168,10 @@ header {
 /* MAIN CONTENT */
 main p {
   width: 90%;
+}
+
+main img {
+  width: 75%;
 }
 
 /* ICONS */

@@ -126,6 +126,20 @@ sidebar model =
         ]
 
 
+stationImage : Maybe String -> Html Msg
+stationImage imageName =
+    case imageName of
+        Just imageName ->
+            let
+                url =
+                    "images/" ++ imageName
+            in
+                img [ src url ] []
+
+        Nothing ->
+            text ""
+
+
 stationDetails : Model -> String -> Html Msg
 stationDetails model stationId =
     let
@@ -147,6 +161,7 @@ stationDetails model stationId =
                         , melodyTime model.progress (melodyToFile station.melody)
                         ]
                     , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
+                    , stationImage station.image
                     , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
                         [ p []
                             [ text "Download "
