@@ -66,7 +66,7 @@ stations =
       , displayName = "Harajuku"
       , id = 3
       , blurb = Just "harajuku.md"
-      , image = Nothing
+      , image = Just "harajuku_800.jpg"
       }
     , { melody = SH3
       , displayName = "Tokyo"
@@ -90,7 +90,7 @@ stations =
       , displayName = "Gotanda"
       , id = 7
       , blurb = Nothing
-      , image = Nothing
+      , image = Just "gotanda_800.jpg"
       }
     , { melody = BellB
       , displayName = "Ueno"
@@ -114,7 +114,7 @@ stations =
       , displayName = "Meguro"
       , id = 11
       , blurb = Nothing
-      , image = Nothing
+      , image = Just "meguro_800.jpg"
       }
     , { melody = SF1
       , displayName = "Ōsaki"
