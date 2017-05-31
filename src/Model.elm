@@ -102,7 +102,7 @@ stations =
       , displayName = "Akihabara"
       , id = 9
       , blurb = Nothing
-      , image = Nothing
+      , image = Just "akihabara_800.jpg"
       }
     , { melody = Twilight
       , displayName = "Shinjuku"

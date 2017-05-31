@@ -113,7 +113,12 @@ getById list id =
 
 errorMessage : Maybe String -> Html Msg
 errorMessage msg =
-    div [] [ text <| Maybe.withDefault "" msg ]
+    case msg of
+        Just errorMessage ->
+            div [ class "error-message" ] [ text errorMessage ]
+
+        Nothing ->
+            text ""
 
 
 sidebar : Model -> Html Msg

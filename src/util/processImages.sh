@@ -10,5 +10,8 @@ mogrify -path ../images -filter Triangle -define filter:support=2 -thumbnail 800
 # append suffix to processed images
 for file in ../images/*.jpg
 do
-  mv "$file" "${file%.jpg}_800.jpg"
+  SUFFIX=$(echo $file | cut -d '_' -f 2)
+  if [ "$SUFFIX" != "800.jpg" ]; then
+    mv "$file" "${file%.jpg}_800.jpg"
+  fi
 done
