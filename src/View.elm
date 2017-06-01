@@ -193,12 +193,13 @@ footerLinks model =
 
 view : Model -> Html Msg
 view model =
-    div [ id "app" ]
+    div []
         [ header [ role "banner" ]
             [ div [ class "logo-container" ] [ a [ href "#/" ] [ text "logo here" ] ]
             , div [ class "page-title" ] [ text "banner-text" ]
             ]
-        , section [ id "app-body" ]
+        , section
+            [ id "app-body" ]
             [ sidebar model
             , page model
             ]

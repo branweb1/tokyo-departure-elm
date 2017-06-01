@@ -71,10 +71,9 @@ html {
 
 body {
   min-height: 100%;
-  border: 1px dashed blue;
 }
 
-#app {
+/*#app {
   height: 100%;
   width: 100%;
   display: flex;
@@ -82,12 +81,14 @@ body {
   min-height: 100vh;
   max-width: 960px;
   margin: 0 auto;
-  border: 1px dashed blue;
-}
+}*/
 
 #app-body {
   flex: 1;
   display: flex;
+  min-height: 80vh;
+  max-width: 960px;
+  margin: 3em auto;
 }
 
 #app-body main {
@@ -146,6 +147,7 @@ nav input[role=search] {
 /* HEADER */
 header {
   display: flex;
+  background-color: green;
 }
 
 .page-title {
@@ -159,12 +161,15 @@ header {
   font-size: 1rem;
   height: 100px;
   margin-right: 1.2em;
-  border-right: 1px solid #ddd;
   vertical-align: bottom;
   text-align: center;
   padding-top: 45px;
 }
 
+/* FOOTER */
+footer {
+  background-color: green;
+}
 /* MAIN CONTENT */
 main p {
   width: 90%;
