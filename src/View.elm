@@ -196,14 +196,14 @@ view model =
     div []
         [ header [ role "banner" ]
             [ div [ class "logo-container" ] [ a [ href "#/" ] [ text "logo here" ] ]
-            , div [ class "page-title" ] [ text "banner-text" ]
+            , h1 [ class "page-title" ] [ text "Tokyo Departure Melodies" ]
             ]
         , section
             [ id "app-body" ]
             [ sidebar model
             , page model
             ]
-        , footerLinks model
+        , footer [] [ text "all rights reserved blah blah" ]
         ]
 
 
