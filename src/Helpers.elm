@@ -42,6 +42,15 @@ melodyToFile melody =
         SF1 ->
             "sf-1.mp3"
 
+        Spring ->
+            "spring.mp3"
+
+        JRMelody ->
+            "melody.mp3"
+
+        FrayingFlowers ->
+            "fraying_of_flowers_v2.mp3"
+
 
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of

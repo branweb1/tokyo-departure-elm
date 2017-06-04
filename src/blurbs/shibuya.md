@@ -1,0 +1,1 @@
+Shibuya was one of the first stations to introduce departure melodies back in the late 1980s. At the station's north exit is the iconic Shibuya crossing, featured prominently in [this scene](https://www.youtube.com/watch?v=s3mK428pL7U) from Sophia Coppola's *Lost in Translation*

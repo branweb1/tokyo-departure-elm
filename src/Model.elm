@@ -37,6 +37,9 @@ type Melody
     | Twilight
     | WaterCrown
     | SF1
+    | Spring
+    | JRMelody
+    | FrayingFlowers
 
 
 type alias Station =
@@ -61,6 +64,12 @@ stations =
       , id = 1
       , blurb = Just "ebisu.md"
       , image = Just "ebisu_800.jpg"
+      }
+    , { melody = Spring
+      , displayName = "Yoyogi"
+      , id = 2
+      , blurb = Just "yoyogi.md"
+      , image = Just "yoyogi_800.jpg"
       }
     , { melody = Harajuku
       , displayName = "Harajuku"
@@ -101,7 +110,7 @@ stations =
     , { melody = BabblingBrook
       , displayName = "Akihabara"
       , id = 9
-      , blurb = Nothing
+      , blurb = Just "akihabara.md"
       , image = Just "akihabara_800.jpg"
       }
     , { melody = Twilight
@@ -121,6 +130,18 @@ stations =
       , id = 12
       , blurb = Nothing
       , image = Nothing
+      }
+    , { melody = JRMelody
+      , displayName = "Ikebukuro"
+      , id = 13
+      , blurb = Just "ikebukuro.md"
+      , image = Just "ikebukuro_800.jpg"
+      }
+    , { melody = FrayingFlowers
+      , displayName = "Shibuya"
+      , id = 14
+      , blurb = Just "shibuya.md"
+      , image = Just "shibuya_800.jpg"
       }
     ]
 
