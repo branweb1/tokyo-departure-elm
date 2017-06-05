@@ -51,6 +51,15 @@ melodyToFile melody =
         FrayingFlowers ->
             "fraying_of_flowers_v2.mp3"
 
+        GotaDelVient ->
+            "gota_del_vient.mp3"
+
+        SH21 ->
+            "sh-2-1.mp3"
+
+        Sakura ->
+            "sakura.mp3"
+
 
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of

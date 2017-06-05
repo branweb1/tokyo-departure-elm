@@ -48,7 +48,7 @@ body {
 
 h1 {
   font-weight: 600;
-  font-size: 2.2em; 
+  font-size: 2.2em;
 }
 
 h2 {
@@ -137,8 +137,7 @@ nav input[role=search] {
 
 /* HEADER */
 header {
-  border-bottom: 1px solid green;
-  background-color: #ddd;
+  border-bottom: 2px solid green;
   text-align: center;
   position: relative;
   height: 60px;

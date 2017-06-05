@@ -40,6 +40,9 @@ type Melody
     | Spring
     | JRMelody
     | FrayingFlowers
+    | GotaDelVient
+    | SH21
+    | Sakura
 
 
 type alias Station =
@@ -87,7 +90,7 @@ stations =
       , displayName = "Mejiro"
       , id = 5
       , blurb = Nothing
-      , image = Nothing
+      , image = Just "mejiro_800.jpg"
       }
     , { melody = Babble
       , displayName = "Kanda"
@@ -104,7 +107,7 @@ stations =
     , { melody = BellB
       , displayName = "Ueno"
       , id = 8
-      , blurb = Nothing
+      , blurb = Just "ueno.md"
       , image = Nothing
       }
     , { melody = BabblingBrook
@@ -126,7 +129,7 @@ stations =
       , image = Just "meguro_800.jpg"
       }
     , { melody = SF1
-      , displayName = "Ōsaki"
+      , displayName = "Osaki"
       , id = 12
       , blurb = Nothing
       , image = Nothing
@@ -142,6 +145,30 @@ stations =
       , id = 14
       , blurb = Just "shibuya.md"
       , image = Just "shibuya_800.jpg"
+      }
+    , { melody = Babble
+      , displayName = "Shinagawa"
+      , id = 15
+      , blurb = Nothing
+      , image = Nothing
+      }
+    , { melody = GotaDelVient
+      , displayName = "Shimbashi"
+      , id = 16
+      , blurb = Nothing
+      , image = Nothing
+      }
+    , { melody = SH21
+      , displayName = "Yūracuchō"
+      , id = 17
+      , blurb = Nothing
+      , image = Nothing
+      }
+    , { melody = Sakura
+      , displayName = "Komagome"
+      , id = 18
+      , blurb = Just "komagome.md"
+      , image = Just "komagome_800.jpg"
       }
     ]
 
