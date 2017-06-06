@@ -123,12 +123,21 @@ errorMessage msg =
 
 sidebar : Model -> Html Msg
 sidebar model =
-    nav [ role "navigation" ]
-        [ label [ Html.Attributes.for "search" ] [ text "Stations" ]
-        , input [ type_ "text", id "search", role "search", placeholder "Search", onInput SetQuery ] []
-        , errorMessage model.errorMsg
-        , stationList model.query model.route model.stations
-        ]
+    let
+        inputClass =
+            case model.errorMsg of
+                Just _ ->
+                    "input-error"
+
+                Nothing ->
+                    "input-normal"
+    in
+        nav [ role "navigation" ]
+            [ label [ Html.Attributes.for "search" ] [ text "Stations" ]
+            , input [ type_ "text", id "search", role "search", placeholder "Search", onInput SetQuery, class inputClass ] []
+            , errorMessage model.errorMsg
+            , stationList model.query model.route model.stations
+            ]
 
 
 stationImage : Maybe String -> Html Msg

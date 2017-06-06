@@ -108,4 +108,4 @@ validateQuery query =
                 Ok query
 
             False ->
-                Err "Search can only contain letters"
+                Err "Letters only please"

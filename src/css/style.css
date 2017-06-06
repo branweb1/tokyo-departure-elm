@@ -135,6 +135,25 @@ nav input[role=search] {
   border: 1px solid #ddd;
 }
 
+nav input[role=search].input-normal {
+  margin-bottom: 1.58rem;
+}
+
+nav input[role=search].input-error {
+  margin-bottom: 0.2rem;
+  border-color: #ff0000;
+  outline: 0;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.error-message {
+  font-size: 0.75em;
+  display: inline-block;
+  width: 90%;
+  color: #ff0000;
+  margin-bottom: 0.45rem;
+}
+
 /* HEADER */
 header {
   border-bottom: 2px solid green;
@@ -162,6 +181,7 @@ footer {
   font-size: 0.75em;
   padding-bottom: 1em;
 }
+
 /* MAIN CONTENT */
 main p {
   width: 90%;
