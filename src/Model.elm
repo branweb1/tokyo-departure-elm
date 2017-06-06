@@ -132,7 +132,7 @@ stations =
       , displayName = "Osaki"
       , id = 12
       , blurb = Nothing
-      , image = Nothing
+      , image = Just "osaki_800.jpg"
       }
     , { melody = JRMelody
       , displayName = "Ikebukuro"
@@ -162,7 +162,7 @@ stations =
       , displayName = "Yūracuchō"
       , id = 17
       , blurb = Nothing
-      , image = Nothing
+      , image = Just "yuracucho_800.jpg"
       }
     , { melody = Sakura
       , displayName = "Komagome"
