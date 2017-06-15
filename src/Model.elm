@@ -108,7 +108,7 @@ stations =
       , displayName = "Ueno"
       , id = 8
       , blurb = Just "ueno.md"
-      , image = Nothing
+      , image = Just "ueno_800.jpg"
       }
     , { melody = BabblingBrook
       , displayName = "Akihabara"
@@ -119,8 +119,8 @@ stations =
     , { melody = Twilight
       , displayName = "Shinjuku"
       , id = 10
-      , blurb = Nothing
-      , image = Nothing
+      , blurb = Just "shinjuku.md"
+      , image = Just "shinjuku_800.jpg"
       }
     , { melody = WaterCrown
       , displayName = "Meguro"
@@ -149,14 +149,14 @@ stations =
     , { melody = Babble
       , displayName = "Shinagawa"
       , id = 15
-      , blurb = Nothing
-      , image = Nothing
+      , blurb = Just "shinagawa.md"
+      , image = Just "shinagawa_800.jpg"
       }
     , { melody = GotaDelVient
       , displayName = "Shimbashi"
       , id = 16
-      , blurb = Nothing
-      , image = Nothing
+      , blurb = Just "shimbashi.md"
+      , image = Just "shimbashi_800.jpg"
       }
     , { melody = SH21
       , displayName = "Yūracuchō"

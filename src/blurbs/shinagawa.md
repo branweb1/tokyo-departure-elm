@@ -1,0 +1,1 @@
+Shinagawa is one of Japan's oldest stations, first opening in the late 1800s. Back then, the station directly abutted Tokyo bay. Now, due to shore-extensions built from waste landfill, the station and the bay are more than a kilometer apart.
