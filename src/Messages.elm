@@ -5,7 +5,7 @@ import Navigation exposing (Location)
 
 
 type Msg
-    = Play
+    = Play Int
     | Pause
     | SetProgress Progress
     | SetEnded

@@ -3,7 +3,7 @@ port module Commands exposing (..)
 import Json.Decode as Decode
 
 
-port playAudio : () -> Cmd msg
+port playAudio : Int -> Cmd msg
 
 
 port pauseAudio : () -> Cmd msg

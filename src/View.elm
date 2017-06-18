@@ -30,20 +30,14 @@ progressBar progress =
             ]
 
 
-controlButton : PlayStatus -> Html Msg
-controlButton playStatus =
+controlButton : Int -> PlayStatus -> Html Msg
+controlButton id playStatus =
     case playStatus of
-        Paused ->
-            span [ onClick Play ] [ playIcon ]
-
         Playing ->
             span [ onClick Pause ] [ pauseIcon ]
 
-        Ended ->
-            span [ onClick Play ] [ playIcon ]
-
-        Unstarted ->
-            span [ onClick Play ] [ playIcon ]
+        _ ->
+            span [ onClick (Play id) ] [ playIcon ]
 
 
 melodyTime : Progress -> String -> Html Msg
@@ -158,25 +152,29 @@ stationDetails : Model -> String -> Html Msg
 stationDetails model stationId =
     let
         station =
-            case String.toInt stationId of
-                Ok idNum ->
-                    getById model.stations idNum
+            Result.toMaybe (String.toInt stationId)
+                |> Maybe.andThen (getById model.stations)
 
-                Err err ->
-                    Nothing
+        ( progress, playStatus ) =
+            case Maybe.map2 (\station nowPlaying -> station.id == nowPlaying) station model.nowPlaying of
+                Just True ->
+                    ( model.progress, model.playStatus )
+
+                _ ->
+                    ( { elapsed = 0.0, total = 0.0 }, Unstarted )
     in
         case station of
             Just station ->
                 main_ [ role "main" ]
                     [ h2 [] [ text station.displayName ]
                     , div [ class "audio-player-controls" ]
-                        [ controlButton model.playStatus
-                        , progressBar model.progress
-                        , melodyTime model.progress (melodyToFile station.melody)
+                        [ controlButton station.id playStatus
+                        , progressBar progress
+                        , melodyTime progress (melodyToFile station.melody)
                         ]
                     , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
                     , stationImage station.image
-                    , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id "audio-player" ]
+                    , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id ("audio-player-" ++ (toString station.id)) ]
                         [ p []
                             [ text "Download "
                             , a [ href ("./melodies/" ++ (melodyToFile station.melody)) ]

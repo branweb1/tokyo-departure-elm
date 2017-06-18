@@ -7,6 +7,7 @@ type alias Model =
     { stations : List Station
     , progress : Progress
     , playStatus : PlayStatus
+    , nowPlaying : Maybe Int
     , query : String
     , errorMsg : Maybe String
     , route : Route
@@ -178,6 +179,7 @@ initialModel route =
     { stations = stations
     , progress = { elapsed = 0.0, total = 0.0 }
     , playStatus = Unstarted
+    , nowPlaying = Nothing
     , query = ""
     , errorMsg = Nothing
     , route = route

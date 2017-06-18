@@ -63,11 +63,11 @@ melodyToFile melody =
 
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of
-        Ok resp ->
-            if isNaN resp.total || isNaN resp.elapsed then
+        Ok progress ->
+            if isNaN progress.total || isNaN progress.elapsed then
                 SetProgress { elapsed = 0.0, total = 0.0 }
             else
-                SetProgress resp
+                SetProgress progress
 
         Err err ->
             NoOp
@@ -81,11 +81,17 @@ progressDecoder =
 
 decodedEndedResponse json =
     case Decode.decodeValue (Decode.field "ended" Decode.bool) json of
-        Ok resp ->
+        Ok _ ->
             SetEnded
 
         Err err ->
             NoOp
+
+
+endedDecoder =
+    Decode.map2 (,)
+        (Decode.field "id" Decode.int)
+        (Decode.field "ended" Decode.bool)
 
 
 decodeMarkdownFile str =

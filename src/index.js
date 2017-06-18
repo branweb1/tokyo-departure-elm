@@ -9,11 +9,13 @@ const app = Elm.Main.embed(mountNode)
 
 // AUDIO
 let player
+let playerId
 let done = false
 
-function play() {
+function play(id) {
   done = false
-  player = document.getElementById('audio-player')
+  playerId = id
+  player = document.getElementById('audio-player-' + id)
   player.play()
 }
 
@@ -23,6 +25,7 @@ function pause() {
 
 function timeupdateListener() {
   app.ports.progress.send({
+    id: playerId,
     elapsed: player.currentTime,
     total: player.duration
   })
@@ -38,6 +41,7 @@ function progress() {
 
 function endedListener() {
   app.ports.ended.send({
+    id: playerId,
     ended: true
   })
 }
