@@ -72,6 +72,15 @@ melodyTime progress filename =
                 span [ class "time" ] [ text timeString ]
 
 
+miscList current =
+    ul []
+        [ li []
+            [ a (routeAttrs current OrphanedMelodies "underlined") [ text "orphans" ] ]
+        , li []
+            [ a (routeAttrs current StationSounds "underlined") [ text "sounds" ] ]
+        ]
+
+
 stationList : String -> Route -> List Station -> Html Msg
 stationList query current stations =
     filterStations query stations
@@ -131,6 +140,8 @@ sidebar model =
             , input [ type_ "text", id "search", role "search", placeholder "Search", onInput SetQuery, class inputClass ] []
             , errorMessage model.errorMsg
             , stationList model.query model.route model.stations
+            , label [] [ text "Misc" ]
+            , miscList model.route
             ]
 
 
@@ -148,7 +159,10 @@ stationImage imageName =
             text ""
 
 
-audioElement : Station -> Html Msg
+
+-- audioElement : Station -> Html Msg
+
+
 audioElement currentStation =
     audio [ src ("./melodies/" ++ (melodyToFile currentStation.melody)), id ("audio-player-" ++ (toString currentStation.id)) ]
         [ p []
@@ -159,24 +173,27 @@ audioElement currentStation =
         ]
 
 
-playerControls : PlayerDetails -> Station -> Html Msg
-playerControls details currentStation =
+
+-- playerControls : PlayerDetails -> Station -> Html Msg
+
+
+playerControls details obj =
     let
         ( playerId, progress, playStatus ) =
             case details of
                 Details id currentProgress currentPlayStatus ->
-                    if currentStation.id == id then
+                    if obj.id == id then
                         ( id, currentProgress, currentPlayStatus )
                     else
-                        ( id, { elapsed = 0.0, total = 0.0 }, Unstarted )
+                        ( obj.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
 
                 NoDetails ->
-                    ( currentStation.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
+                    ( obj.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
     in
         div [ class "audio-player-controls" ]
             [ controlButton playerId playStatus
             , progressBar progress
-            , melodyTime progress (melodyToFile currentStation.melody)
+            , melodyTime progress (melodyToFile obj.melody)
             ]
 
 
@@ -194,6 +211,36 @@ stationDetails model =
 
         Nothing ->
             main_ [ role "main" ] []
+
+
+orphanedMelodyDetails : Model -> Html Msg
+orphanedMelodyDetails model =
+    main_ [ role "main" ]
+        (List.map
+            (\orphan ->
+                div []
+                    [ h2 [] [ text orphan.displayName ]
+                    , playerControls model.details orphan
+                    , audioElement orphan
+                    ]
+            )
+            model.orphanedMelodies
+        )
+
+
+stationSoundDetails : Model -> Html Msg
+stationSoundDetails model =
+    main_ [ role "main" ]
+        (List.map
+            (\sound ->
+                div []
+                    [ h2 [] [ text sound.displayName ]
+                    , playerControls model.details sound
+                    , audioElement sound
+                    ]
+            )
+            model.stationSounds
+        )
 
 
 
@@ -239,8 +286,24 @@ page model =
         StationDetails id ->
             stationDetailsPage model
 
+        OrphanedMelodies ->
+            orphanedMelodyPage model
+
+        StationSounds ->
+            stationSoundPage model
+
         NotFound ->
             notFoundPage
+
+
+stationSoundPage : Model -> Html Msg
+stationSoundPage model =
+    stationSoundDetails model
+
+
+orphanedMelodyPage : Model -> Html Msg
+orphanedMelodyPage model =
+    orphanedMelodyDetails model
 
 
 notFoundPage : Html Msg

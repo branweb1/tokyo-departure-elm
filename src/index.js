@@ -13,6 +13,10 @@ let playerId
 let done = false
 
 function play(id) {
+  if (player && playerId !== id) {
+    reset()
+  }
+
   done = false
   playerId = id
   player = document.getElementById('audio-player-' + id)
@@ -81,9 +85,9 @@ function loadMarkdownFile(file) {
   req.send()
 }
 
+app.ports.reset.subscribe(reset)
 app.ports.playAudio.subscribe(play)
+app.ports.trackEnded.subscribe(ended)
 app.ports.pauseAudio.subscribe(pause)
 app.ports.trackProgress.subscribe(progress)
-app.ports.trackEnded.subscribe(ended)
-app.ports.reset.subscribe(reset)
 app.ports.loadMarkdownFile.subscribe(loadMarkdownFile)

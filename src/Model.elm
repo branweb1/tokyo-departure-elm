@@ -5,6 +5,8 @@ import Routing exposing (Route(..))
 
 type alias Model =
     { stations : List Station
+    , orphanedMelodies : List MiscSound
+    , stationSounds : List MiscSound
     , currentStation : Maybe Station
     , details : PlayerDetails
     , query : String
@@ -52,6 +54,18 @@ type Melody
     | GotaDelVient
     | SH21
     | Sakura
+    | Airly
+    | AstroBoyReggae
+    | SH1
+    | SH52
+    | TR4
+    | TR11
+    | TR2
+    | Notification
+    | Notifcation2
+    | DoorChime
+    | DoorChime2
+    | Brakes
 
 
 type alias Station =
@@ -182,6 +196,71 @@ stations =
     ]
 
 
+type alias MiscSound =
+    { melody : Melody
+    , displayName : String
+    , id : Int
+    }
+
+
+orphanedMelodies : List MiscSound
+orphanedMelodies =
+    [ { id = 0
+      , melody = Airly
+      , displayName = "Airly"
+      }
+    , { id = 1
+      , melody = AstroBoyReggae
+      , displayName = "Astro Boy Reggae Theme"
+      }
+    , { id = 2
+      , melody = SH1
+      , displayName = "SH1"
+      }
+    , { id = 3
+      , melody = SH52
+      , displayName = "SH5-2"
+      }
+    , { id = 4
+      , melody = TR4
+      , displayName = "TR4"
+      }
+    , { id = 5
+      , melody = TR11
+      , displayName = "TR11"
+      }
+    , { id = 6
+      , melody = TR2
+      , displayName = "TR2"
+      }
+    ]
+
+
+stationSounds : List MiscSound
+stationSounds =
+    [ { id = 0
+      , melody = Notification
+      , displayName = "Station Notification"
+      }
+    , { id = 1
+      , melody = Notifcation2
+      , displayName = "Station Notification 2"
+      }
+    , { id = 2
+      , melody = DoorChime
+      , displayName = "Door Chime"
+      }
+    , { id = 3
+      , melody = DoorChime2
+      , displayName = "Door Chime 2"
+      }
+    , { id = 4
+      , melody = Brakes
+      , displayName = "Brakes"
+      }
+    ]
+
+
 getCurrentStation : Int -> Maybe Station
 getCurrentStation id =
     List.filter (\a -> a.id == id) stations
@@ -201,6 +280,8 @@ initialModel route =
                     Nothing
     in
         { stations = stations
+        , orphanedMelodies = orphanedMelodies
+        , stationSounds = stationSounds
         , currentStation = currentStation
         , details = NoDetails
         , query = ""

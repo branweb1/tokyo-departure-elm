@@ -60,6 +60,42 @@ melodyToFile melody =
         Sakura ->
             "sakura.mp3"
 
+        Airly ->
+            "airly.mp3"
+
+        AstroBoyReggae ->
+            "astro_boy_v4.mp3"
+
+        SH1 ->
+            "sh-1.mp3"
+
+        SH52 ->
+            "sh-5-2.mp3"
+
+        TR4 ->
+            "tr4.mp3"
+
+        TR11 ->
+            "tr11.mp3"
+
+        TR2 ->
+            "tr2.mp3"
+
+        Notification ->
+            "station_notification.mp3"
+
+        Notifcation2 ->
+            "station_notification_2.mp3"
+
+        DoorChime ->
+            "ddg_nds_e231_door_chime.mp3"
+
+        DoorChime2 ->
+            "ddg_ss_atc_kincon.mp3"
+
+        Brakes ->
+            "ddg_ios_brake.mp3"
+
 
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of

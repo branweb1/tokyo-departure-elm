@@ -10,6 +10,8 @@ type Route
     = Home
     | Stations
     | StationDetails String
+    | OrphanedMelodies
+    | StationSounds
     | NotFound
 
 
@@ -19,6 +21,8 @@ route =
         [ Url.map Home (Url.top)
         , Url.map StationDetails (Url.s "stations" </> Url.string)
         , Url.map Stations (Url.s "stations")
+        , Url.map StationSounds (Url.s "sounds")
+        , Url.map OrphanedMelodies (Url.s "orphaned")
         ]
 
 
@@ -35,6 +39,12 @@ routeToString route =
 
                 StationDetails id ->
                     [ "stations", id ]
+
+                OrphanedMelodies ->
+                    [ "orphaned" ]
+
+                StationSounds ->
+                    [ "sounds" ]
 
                 NotFound ->
                     [ "notfound" ]
