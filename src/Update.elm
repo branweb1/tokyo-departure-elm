@@ -1,7 +1,8 @@
 module Update exposing (..)
 
 import Messages exposing (Msg(..))
-import Model exposing (Model, PlayStatus(..))
+import Model exposing (Model, PlayStatus(..), PlayerDetails(..))
+import Routing exposing (Route(..))
 import Commands exposing (..)
 import Routing exposing (parseLocation)
 import Helpers exposing (validateQuery)
@@ -16,22 +17,49 @@ update msg model =
     -- in
     case msg of
         Play id ->
-            ( { model
-                | progress = { elapsed = 0.0, total = 0.0 }
-                , playStatus = Playing
-                , nowPlaying = Just id
-              }
-            , Cmd.batch [ playAudio id, trackProgress (), trackEnded () ]
-            )
+            let
+                playerDetails =
+                    Details id { elapsed = 0.0, total = 0.0 } Playing
+            in
+                ( { model | details = playerDetails }
+                , Cmd.batch [ playAudio id, trackProgress (), trackEnded () ]
+                )
 
         Pause ->
-            ( { model | playStatus = Paused }, pauseAudio () )
+            case model.details of
+                Details id progress playStatus ->
+                    let
+                        newDetails =
+                            Details id progress Paused
+                    in
+                        ( { model | details = newDetails }, pauseAudio () )
+
+                NoDetails ->
+                    ( model, Cmd.none )
 
         SetProgress progress ->
-            ( { model | progress = progress }, Cmd.none )
+            case model.details of
+                Details id oldProgress playStatus ->
+                    let
+                        newDetails =
+                            Details id progress playStatus
+                    in
+                        ( { model | details = newDetails }, Cmd.none )
+
+                NoDetails ->
+                    ( model, Cmd.none )
 
         SetEnded ->
-            ( { model | playStatus = Ended }, Cmd.none )
+            case model.details of
+                Details id progress playStatus ->
+                    let
+                        newDetails =
+                            Details id progress Ended
+                    in
+                        ( { model | details = newDetails }, Cmd.none )
+
+                NoDetails ->
+                    ( model, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -59,12 +87,20 @@ update msg model =
             let
                 route =
                     parseLocation location
+
+                currentStation =
+                    case route of
+                        StationDetails stationId ->
+                            Result.toMaybe (String.toInt stationId)
+                                |> Maybe.andThen (getById model.stations)
+
+                        _ ->
+                            Nothing
             in
                 ( { model
                     | route = route
-                    , progress = { elapsed = 0.0, total = 0.0 }
-                    , nowPlaying = Nothing
-                    , playStatus = Unstarted
+                    , currentStation = currentStation
+                    , details = NoDetails
                     , blurb = Nothing
                   }
                 , reset ()

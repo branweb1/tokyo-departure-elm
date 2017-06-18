@@ -4,7 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Attributes.Aria exposing (role)
 import Html.Events exposing (onClick, onInput)
-import Model exposing (Progress, PlayStatus(..), Model, Station)
+import Model exposing (Progress, PlayStatus(..), Model, Station, PlayerDetails(..))
 import Messages exposing (..)
 import Routing exposing (Route(..), routeAttrs)
 import Helpers exposing (melodyToFile)
@@ -148,43 +148,56 @@ stationImage imageName =
             text ""
 
 
-stationDetails : Model -> String -> Html Msg
-stationDetails model stationId =
+audioElement : Station -> Html Msg
+audioElement currentStation =
+    audio [ src ("./melodies/" ++ (melodyToFile currentStation.melody)), id ("audio-player-" ++ (toString currentStation.id)) ]
+        [ p []
+            [ text "Download "
+            , a [ href ("./melodies/" ++ (melodyToFile currentStation.melody)) ]
+                [ text (melodyToFile currentStation.melody) ]
+            ]
+        ]
+
+
+playerControls : PlayerDetails -> Station -> Html Msg
+playerControls details currentStation =
     let
-        station =
-            Result.toMaybe (String.toInt stationId)
-                |> Maybe.andThen (getById model.stations)
+        ( playerId, progress, playStatus ) =
+            case details of
+                Details id currentProgress currentPlayStatus ->
+                    if currentStation.id == id then
+                        ( id, currentProgress, currentPlayStatus )
+                    else
+                        ( id, { elapsed = 0.0, total = 0.0 }, Unstarted )
 
-        ( progress, playStatus ) =
-            case Maybe.map2 (\station nowPlaying -> station.id == nowPlaying) station model.nowPlaying of
-                Just True ->
-                    ( model.progress, model.playStatus )
-
-                _ ->
-                    ( { elapsed = 0.0, total = 0.0 }, Unstarted )
+                NoDetails ->
+                    ( currentStation.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
     in
-        case station of
-            Just station ->
-                main_ [ role "main" ]
-                    [ h2 [] [ text station.displayName ]
-                    , div [ class "audio-player-controls" ]
-                        [ controlButton station.id playStatus
-                        , progressBar progress
-                        , melodyTime progress (melodyToFile station.melody)
-                        ]
-                    , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
-                    , stationImage station.image
-                    , audio [ src ("./melodies/" ++ (melodyToFile station.melody)), id ("audio-player-" ++ (toString station.id)) ]
-                        [ p []
-                            [ text "Download "
-                            , a [ href ("./melodies/" ++ (melodyToFile station.melody)) ]
-                                [ text (melodyToFile station.melody) ]
-                            ]
-                        ]
-                    ]
+        div [ class "audio-player-controls" ]
+            [ controlButton playerId playStatus
+            , progressBar progress
+            , melodyTime progress (melodyToFile currentStation.melody)
+            ]
 
-            Nothing ->
-                main_ [ role "main" ] []
+
+stationDetails : Model -> Html Msg
+stationDetails model =
+    case model.currentStation of
+        Just currentStation ->
+            main_ [ role "main" ]
+                [ h2 [] [ text currentStation.displayName ]
+                , playerControls model.details currentStation
+                , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
+                , stationImage currentStation.image
+                , audioElement currentStation
+                ]
+
+        Nothing ->
+            main_ [ role "main" ] []
+
+
+
+-- TODO: delete this???vvvv
 
 
 footerLinks : Model -> Html Msg
@@ -224,7 +237,7 @@ page model =
             homePage model
 
         StationDetails id ->
-            stationDetailsPage model id
+            stationDetailsPage model
 
         NotFound ->
             notFoundPage
@@ -235,9 +248,9 @@ notFoundPage =
     main_ [ role "main" ] [ text "404 :-(" ]
 
 
-stationDetailsPage : Model -> String -> Html Msg
-stationDetailsPage model stationId =
-    stationDetails model stationId
+stationDetailsPage : Model -> Html Msg
+stationDetailsPage model =
+    stationDetails model
 
 
 homePage : Model -> Html Msg

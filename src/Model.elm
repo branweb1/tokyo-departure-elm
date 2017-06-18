@@ -1,18 +1,21 @@
 module Model exposing (..)
 
-import Routing exposing (Route)
+import Routing exposing (Route(..))
 
 
 type alias Model =
     { stations : List Station
-    , progress : Progress
-    , playStatus : PlayStatus
-    , nowPlaying : Maybe Int
+    , currentStation : Maybe Station
+    , details : PlayerDetails
     , query : String
     , errorMsg : Maybe String
     , route : Route
     , blurb : Maybe String
     }
+
+
+type alias NowPlayingId =
+    Int
 
 
 type PlayStatus
@@ -24,6 +27,11 @@ type PlayStatus
 
 type alias Progress =
     { elapsed : Float, total : Float }
+
+
+type PlayerDetails
+    = NoDetails
+    | Details NowPlayingId Progress PlayStatus
 
 
 type Melody
@@ -174,14 +182,29 @@ stations =
     ]
 
 
+getCurrentStation : Int -> Maybe Station
+getCurrentStation id =
+    List.filter (\a -> a.id == id) stations
+        |> List.head
+
+
 initialModel : Route -> Model
 initialModel route =
-    { stations = stations
-    , progress = { elapsed = 0.0, total = 0.0 }
-    , playStatus = Unstarted
-    , nowPlaying = Nothing
-    , query = ""
-    , errorMsg = Nothing
-    , route = route
-    , blurb = Nothing
-    }
+    let
+        currentStation =
+            case route of
+                StationDetails stationId ->
+                    Result.toMaybe (String.toInt stationId)
+                        |> Maybe.andThen getCurrentStation
+
+                _ ->
+                    Nothing
+    in
+        { stations = stations
+        , currentStation = currentStation
+        , details = NoDetails
+        , query = ""
+        , errorMsg = Nothing
+        , route = route
+        , blurb = Nothing
+        }
