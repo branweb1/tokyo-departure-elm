@@ -57,6 +57,11 @@ h2 {
   margin-bottom: 0.5em;
 }
 
+h4 {
+  font-size: 1.5em;
+  margin-bottom: 1rem;
+}
+
 p {
   line-height: 1.4;
   margin-bottom: 1em;
@@ -107,10 +112,15 @@ nav > * {
   margin-bottom: 0.5em;
 }
 
+#misc-label,
 nav label {
   display: block;
   font-weight: 600;
   font-size: 1.5em;
+}
+
+#misc-label {
+  margin-top: 1.58rem;
 }
 
 nav li {
@@ -190,6 +200,20 @@ main p {
 main img {
   width: 75%;
 }
+
+.misc-detail {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1.58rem;
+}
+
+.misc-detail:first-child {
+  margin-top: 3em;
+}
+
+.misc-detail:last-child {
+  border-bottom: 0;
+}
+
 
 /* ICONS */
 .icon {

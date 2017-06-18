@@ -27,6 +27,15 @@ init location =
                         |> Maybe.andThen (\id -> getById initModel.stations id)
                         |> Maybe.andThen (\station -> station.blurb)
 
+                OrphanedMelodies ->
+                    Just "_orphaned.md"
+
+                StationSounds ->
+                    Just "_sounds.md"
+
+                Home ->
+                    Just "_home.md"
+
                 _ ->
                     Nothing
     in

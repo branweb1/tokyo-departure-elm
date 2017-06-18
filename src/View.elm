@@ -2,7 +2,7 @@ module View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Attributes.Aria exposing (role)
+import Html.Attributes.Aria exposing (role, ariaLabelledby)
 import Html.Events exposing (onClick, onInput)
 import Model exposing (Progress, PlayStatus(..), Model, Station, PlayerDetails(..))
 import Messages exposing (..)
@@ -73,12 +73,19 @@ melodyTime progress filename =
 
 
 miscList current =
-    ul []
-        [ li []
-            [ a (routeAttrs current OrphanedMelodies "underlined") [ text "orphans" ] ]
-        , li []
-            [ a (routeAttrs current StationSounds "underlined") [ text "sounds" ] ]
-        ]
+    let
+        attributesOne =
+            [ onClick (GetBlurb (Just "_orphaned.md")) ] ++ (routeAttrs current OrphanedMelodies "underlined")
+
+        attributesTwo =
+            [ onClick (GetBlurb (Just "_sounds.md")) ] ++ (routeAttrs current StationSounds "underlined")
+    in
+        ul [ ariaLabelledby "misc-label" ]
+            [ li []
+                [ a attributesOne [ text "Orphaned Melodies" ] ]
+            , li []
+                [ a attributesTwo [ text "Station Sounds" ] ]
+            ]
 
 
 stationList : String -> Route -> List Station -> Html Msg
@@ -140,7 +147,7 @@ sidebar model =
             , input [ type_ "text", id "search", role "search", placeholder "Search", onInput SetQuery, class inputClass ] []
             , errorMessage model.errorMsg
             , stationList model.query model.route model.stations
-            , label [] [ text "Misc" ]
+            , span [ id "misc-label" ] [ text "Misc" ]
             , miscList model.route
             ]
 
@@ -204,7 +211,7 @@ stationDetails model =
             main_ [ role "main" ]
                 [ h2 [] [ text currentStation.displayName ]
                 , playerControls model.details currentStation
-                , div [] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
+                , ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml [])
                 , stationImage currentStation.image
                 , audioElement currentStation
                 ]
@@ -216,31 +223,43 @@ stationDetails model =
 orphanedMelodyDetails : Model -> Html Msg
 orphanedMelodyDetails model =
     main_ [ role "main" ]
-        (List.map
-            (\orphan ->
-                div []
-                    [ h2 [] [ text orphan.displayName ]
-                    , playerControls model.details orphan
-                    , audioElement orphan
-                    ]
+        [ h2 []
+            [ text "Orphaned Melodies" ]
+        , ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml [])
+        , div
+            []
+            (List.map
+                (\orphan ->
+                    div [ class "misc-detail" ]
+                        [ h4 [] [ text orphan.displayName ]
+                        , playerControls model.details orphan
+                        , audioElement orphan
+                        ]
+                )
+                model.orphanedMelodies
             )
-            model.orphanedMelodies
-        )
+        ]
 
 
 stationSoundDetails : Model -> Html Msg
 stationSoundDetails model =
     main_ [ role "main" ]
-        (List.map
-            (\sound ->
-                div []
-                    [ h2 [] [ text sound.displayName ]
-                    , playerControls model.details sound
-                    , audioElement sound
-                    ]
+        [ h2 []
+            [ text "Station Sounds" ]
+        , ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml [])
+        , div
+            []
+            (List.map
+                (\sound ->
+                    div [ class "misc-detail" ]
+                        [ h4 [] [ text sound.displayName ]
+                        , playerControls model.details sound
+                        , audioElement sound
+                        ]
+                )
+                model.stationSounds
             )
-            model.stationSounds
-        )
+        ]
 
 
 
@@ -318,4 +337,4 @@ stationDetailsPage model =
 
 homePage : Model -> Html Msg
 homePage model =
-    main_ [ role "main" ] [ text "welcome home!" ]
+    main_ [ role "main" ] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
