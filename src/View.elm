@@ -4,10 +4,19 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Attributes.Aria exposing (role, ariaLabelledby)
 import Html.Events exposing (onClick, onInput)
-import Model exposing (Progress, PlayStatus(..), Model, Station, PlayerDetails(..))
+import Model
+    exposing
+        ( Progress
+        , PlayStatus(..)
+        , Model
+        , Station
+        , Melody
+        , PlayerDetails(..)
+        , NowPlayingId
+        )
 import Messages exposing (..)
 import Routing exposing (Route(..), routeAttrs)
-import Helpers exposing (melodyToFile)
+import Helpers exposing (melodyToFile, getById)
 import Icons exposing (playIcon, pauseIcon)
 import Markdown
 
@@ -72,19 +81,22 @@ melodyTime progress filename =
                 span [ class "time" ] [ text timeString ]
 
 
+miscList : Route -> Html Msg
 miscList current =
     let
-        attributesOne =
-            [ onClick (GetBlurb (Just "_orphaned.md")) ] ++ (routeAttrs current OrphanedMelodies "underlined")
+        linkOneAttrs =
+            [ onClick (GetBlurb (Just "_orphaned.md")) ]
+                ++ (routeAttrs current OrphanedMelodies "underlined")
 
-        attributesTwo =
-            [ onClick (GetBlurb (Just "_sounds.md")) ] ++ (routeAttrs current StationSounds "underlined")
+        linkTwoAttrs =
+            [ onClick (GetBlurb (Just "_sounds.md")) ]
+                ++ (routeAttrs current StationSounds "underlined")
     in
         ul [ ariaLabelledby "misc-label" ]
             [ li []
-                [ a attributesOne [ text "Orphaned Melodies" ] ]
+                [ a linkOneAttrs [ text "Orphaned Melodies" ] ]
             , li []
-                [ a attributesTwo [ text "Station Sounds" ] ]
+                [ a linkTwoAttrs [ text "Station Sounds" ] ]
             ]
 
 
@@ -96,12 +108,10 @@ stationList query current stations =
             (\station ->
                 let
                     attributes =
-                        [ onClick (GetBlurb station.blurb) ] ++ (routeAttrs current (StationDetails (toString station.id)) "underlined")
+                        [ onClick (GetBlurb station.blurb) ]
+                            ++ (routeAttrs current (StationDetails <| toString station.id) "underlined")
                 in
-                    li []
-                        [ a attributes
-                            [ text station.displayName ]
-                        ]
+                    li [] [ a attributes [ text station.displayName ] ]
             )
         |> ul []
 
@@ -113,12 +123,6 @@ filterStations query stations =
             String.startsWith (String.toLower query) (String.toLower station.displayName)
         )
         stations
-
-
-getById : List Station -> Int -> Maybe Station
-getById list id =
-    List.filter (\item -> item.id == id) list
-        |> List.head
 
 
 errorMessage : Maybe String -> Html Msg
@@ -166,41 +170,48 @@ stationImage imageName =
             text ""
 
 
+audioElement : { b | id : a, melody : Melody } -> Html Msg
+audioElement { melody, id } =
+    let
+        srcValue =
+            "./melodies/" ++ (melodyToFile melody)
 
--- audioElement : Station -> Html Msg
+        idValue =
+            "audio-player-" ++ (toString id)
 
-
-audioElement currentStation =
-    audio [ src ("./melodies/" ++ (melodyToFile currentStation.melody)), id ("audio-player-" ++ (toString currentStation.id)) ]
-        [ p []
-            [ text "Download "
-            , a [ href ("./melodies/" ++ (melodyToFile currentStation.melody)) ]
-                [ text (melodyToFile currentStation.melody) ]
+        hrefValue =
+            "./melodies/" ++ (melodyToFile melody)
+    in
+        audio [ src srcValue, Html.Attributes.id idValue ]
+            [ p []
+                [ text "Download "
+                , a [ href hrefValue ]
+                    [ text (melodyToFile melody) ]
+                ]
             ]
-        ]
 
 
-
--- playerControls : PlayerDetails -> Station -> Html Msg
-
-
-playerControls details obj =
+playerControls :
+    PlayerDetails
+    -> { b | id : NowPlayingId, melody : Melody, displayName : String }
+    -> Html Msg
+playerControls details sound =
     let
         ( playerId, progress, playStatus ) =
             case details of
                 Details id currentProgress currentPlayStatus ->
-                    if obj.id == id then
+                    if sound.id == id then
                         ( id, currentProgress, currentPlayStatus )
                     else
-                        ( obj.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
+                        ( sound.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
 
                 NoDetails ->
-                    ( obj.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
+                    ( sound.id, { elapsed = 0.0, total = 0.0 }, Unstarted )
     in
         div [ class "audio-player-controls" ]
             [ controlButton playerId playStatus
             , progressBar progress
-            , melodyTime progress (melodyToFile obj.melody)
+            , melodyTime progress (melodyToFile sound.melody)
             ]
 
 
@@ -264,17 +275,15 @@ stationSoundDetails model =
 
 
 -- TODO: delete this???vvvv
-
-
-footerLinks : Model -> Html Msg
-footerLinks model =
-    footer
-        []
-        [ a (routeAttrs model.route Stations "active") [ text "stations" ]
-        , a (routeAttrs model.route (StationDetails "1") "active") [ text "station" ]
-        , a (routeAttrs model.route Home "active") [ text "home" ]
-        , a (routeAttrs model.route NotFound "active") [ text "404 page" ]
-        ]
+-- footerLinks : Model -> Html Msg
+-- footerLinks model =
+--     footer
+--         []
+--         [ a (routeAttrs model.route Stations "active") [ text "stations" ]
+--         , a (routeAttrs model.route (StationDetails "1") "active") [ text "station" ]
+--         , a (routeAttrs model.route Home "active") [ text "home" ]
+--         , a (routeAttrs model.route NotFound "active") [ text "404 page" ]
+--         ]
 
 
 view : Model -> Html Msg
@@ -337,4 +346,5 @@ stationDetailsPage model =
 
 homePage : Model -> Html Msg
 homePage model =
-    main_ [ role "main" ] [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]
+    main_ [ role "main" ]
+        [ ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml []) ]

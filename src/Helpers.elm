@@ -2,8 +2,14 @@ module Helpers exposing (..)
 
 import Json.Decode as Decode
 import Char
-import Model exposing (Melody(..), Progress)
+import Model exposing (Melody(..), Progress, Station)
 import Messages exposing (Msg(SetProgress, SetEnded, NoOp, SetBlurb))
+
+
+getById : List Station -> Int -> Maybe Station
+getById list id =
+    List.filter (\item -> item.id == id) list
+        |> List.head
 
 
 melodyToFile : Melody -> String

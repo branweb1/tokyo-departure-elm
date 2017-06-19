@@ -6,7 +6,7 @@ import Routing exposing (Route(..))
 import Commands exposing (..)
 import Routing exposing (parseLocation)
 import Helpers exposing (validateQuery)
-import View exposing (getById)
+import Helpers exposing (getById)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

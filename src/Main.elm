@@ -5,9 +5,10 @@ import Navigation exposing (Location)
 import Routing exposing (parseLocation, Route(..))
 import Subscriptions exposing (subscriptions)
 import Update exposing (update)
-import View exposing (view, getById)
+import View exposing (view)
 import Messages exposing (Msg(ChangeLocation))
 import Commands exposing (loadMarkdownFile)
+import Helpers exposing (getById)
 
 
 init : Location -> ( Model, Cmd Msg )

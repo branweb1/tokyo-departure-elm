@@ -77,6 +77,13 @@ type alias Station =
     }
 
 
+type alias MiscSound =
+    { melody : Melody
+    , displayName : String
+    , id : Int
+    }
+
+
 stations : List Station
 stations =
     [ { melody = AstroBoyV2
@@ -194,13 +201,6 @@ stations =
       , image = Just "komagome_800.jpg"
       }
     ]
-
-
-type alias MiscSound =
-    { melody : Melody
-    , displayName : String
-    , id : Int
-    }
 
 
 orphanedMelodies : List MiscSound
