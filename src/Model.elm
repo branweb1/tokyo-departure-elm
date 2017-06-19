@@ -261,31 +261,15 @@ stationSounds =
     ]
 
 
-getCurrentStation : Int -> Maybe Station
-getCurrentStation id =
-    List.filter (\a -> a.id == id) stations
-        |> List.head
-
-
-initialModel : Route -> Model
-initialModel route =
-    let
-        currentStation =
-            case route of
-                StationDetails stationId ->
-                    Result.toMaybe (String.toInt stationId)
-                        |> Maybe.andThen getCurrentStation
-
-                _ ->
-                    Nothing
-    in
-        { stations = stations
-        , orphanedMelodies = orphanedMelodies
-        , stationSounds = stationSounds
-        , currentStation = currentStation
-        , details = NoDetails
-        , query = ""
-        , errorMsg = Nothing
-        , route = route
-        , blurb = Nothing
-        }
+initialModel : Route -> Maybe Station -> Model
+initialModel route currentStation =
+    { stations = stations
+    , orphanedMelodies = orphanedMelodies
+    , stationSounds = stationSounds
+    , currentStation = currentStation
+    , details = NoDetails
+    , query = ""
+    , errorMsg = Nothing
+    , route = route
+    , blurb = Nothing
+    }

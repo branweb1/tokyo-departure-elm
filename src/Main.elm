@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Model exposing (initialModel, Model)
+import Model exposing (initialModel, Model, stations)
 import Navigation exposing (Location)
 import Routing exposing (parseLocation, Route(..))
 import Subscriptions exposing (subscriptions)
@@ -17,8 +17,18 @@ init location =
         route =
             parseLocation location
 
+        currentStation =
+            case route of
+                StationDetails stationId ->
+                    String.toInt stationId
+                        |> Result.toMaybe
+                        |> Maybe.andThen (\id -> getById stations id)
+
+                _ ->
+                    Nothing
+
         initModel =
-            initialModel route
+            initialModel route currentStation
 
         fileName =
             case route of
