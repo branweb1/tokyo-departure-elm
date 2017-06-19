@@ -290,7 +290,10 @@ view : Model -> Html Msg
 view model =
     div []
         [ header [ role "banner" ]
-            [ div [ class "logo-container" ] [ a [ href "#/" ] [ text "logo here" ] ]
+            [ div [ class "logo-container" ]
+                [ a [ href "#/", onClick (GetBlurb (Just "_home.md")) ]
+                    [ text "logo here" ]
+                ]
             , h1 [ class "page-title" ] [ text "Tokyo Departure Melodies" ]
             ]
         , section
