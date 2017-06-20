@@ -12,7 +12,7 @@
   width: 300px;
   border: 1px solid #000;
   display: inline-block;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   vertical-align: top;
   margin-top: 10px;
 }
@@ -38,6 +38,16 @@ a {
 a.active {
   font-weight: bold;
   text-decoration: underline;
+}
+
+main a, main a:visited {
+  color: #7e0425;
+  text-decoration: underline;
+}
+
+footer a {
+  text-decoration: underline;
+  color: #9b9aa1;
 }
 
 /* TYPOGRAPHY */
@@ -112,8 +122,7 @@ nav > * {
   margin-bottom: 0.5em;
 }
 
-#misc-label,
-nav label {
+#misc-label, nav label {
   display: block;
   font-weight: 600;
   font-size: 1.5em;
@@ -188,8 +197,9 @@ header {
 /* FOOTER */
 footer {
   text-align: center;
-  font-size: 0.75em;
-  padding-bottom: 1em;
+  font-size: 0.85em;
+  padding: 1em 0 3em 0;
+  color: #9b9aa1;
 }
 
 /* MAIN CONTENT */
@@ -197,8 +207,24 @@ main p {
   width: 90%;
 }
 
-main img {
+main figure {
   width: 75%;
+}
+
+main img {
+  width: 100%;
+}
+
+figcaption {
+  font-size: 0.85rem;
+  color: #999;
+  padding: 0 0.5rem;
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+figcaption a:visited, figcaption a {
+  color: #999;
 }
 
 .misc-detail {
@@ -214,7 +240,6 @@ main img {
   border-bottom: 0;
 }
 
-
 /* ICONS */
 .icon {
   fill: green;
@@ -223,6 +248,6 @@ main img {
   width: 40px;
 }
 
-.icon:hover{
+.icon:hover {
   fill: red;
 }

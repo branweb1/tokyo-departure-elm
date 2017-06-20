@@ -13,6 +13,7 @@ import Model
         , Melody
         , PlayerDetails(..)
         , NowPlayingId
+        , ImageAttribution
         )
 import Messages exposing (..)
 import Routing exposing (Route(..), routeAttrs)
@@ -156,15 +157,30 @@ sidebar model =
             ]
 
 
-stationImage : Maybe String -> Html Msg
-stationImage imageName =
+attribution attribution =
+    case attribution of
+        Just attribution ->
+            figcaption []
+                [ a [ href attribution.url, target "_blank" ] [ text "Photo" ]
+                , text (" by " ++ attribution.author ++ " | " ++ attribution.license)
+                ]
+
+        Nothing ->
+            text ""
+
+
+stationImage : Maybe String -> Maybe ImageAttribution -> Html Msg
+stationImage imageName attributionInfo =
     case imageName of
         Just imageName ->
             let
                 url =
                     "images/" ++ imageName
             in
-                img [ src url ] []
+                figure []
+                    [ img [ src url ] []
+                    , attribution attributionInfo
+                    ]
 
         Nothing ->
             text ""
@@ -223,7 +239,7 @@ stationDetails model =
                 [ h2 [] [ text currentStation.displayName ]
                 , playerControls model.details currentStation
                 , ((Maybe.withDefault "" model.blurb) |> Markdown.toHtml [])
-                , stationImage currentStation.image
+                , stationImage currentStation.image currentStation.imageAttribution
                 , audioElement currentStation
                 ]
 
@@ -301,7 +317,11 @@ view model =
             [ sidebar model
             , page model
             ]
-        , footer [] [ text "all rights reserved blah blah" ]
+        , footer []
+            [ text "This site is written in Elm. Go "
+            , a [ href "https://github.com/branweb1/tokyo-departure-elm", target "_blank" ] [ text "here" ]
+            , text " to view the code. - © 2017 Brandon Webster"
+            ]
         ]
 
 
