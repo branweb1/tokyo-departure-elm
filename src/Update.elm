@@ -11,10 +11,6 @@ import Helpers exposing (getById)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    -- let
-    --     _ =
-    --         Debug.log "" model
-    -- in
     case msg of
         Play id ->
             let

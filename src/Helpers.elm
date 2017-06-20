@@ -103,6 +103,7 @@ melodyToFile melody =
             "ddg_ios_brake.mp3"
 
 
+decodeResponse : Decode.Value -> Msg
 decodeResponse json =
     case Decode.decodeValue progressDecoder json of
         Ok progress ->
@@ -115,12 +116,14 @@ decodeResponse json =
             NoOp
 
 
+progressDecoder : Decode.Decoder Progress
 progressDecoder =
     Decode.map2 Progress
         (Decode.field "elapsed" Decode.float)
         (Decode.field "total" Decode.float)
 
 
+decodedEndedResponse : Decode.Value -> Msg
 decodedEndedResponse json =
     case Decode.decodeValue (Decode.field "ended" Decode.bool) json of
         Ok _ ->
@@ -130,12 +133,7 @@ decodedEndedResponse json =
             NoOp
 
 
-endedDecoder =
-    Decode.map2 (,)
-        (Decode.field "id" Decode.int)
-        (Decode.field "ended" Decode.bool)
-
-
+decodeMarkdownFile : Decode.Value -> Msg
 decodeMarkdownFile str =
     case Decode.decodeValue Decode.string str of
         Ok text ->
