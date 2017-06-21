@@ -1,4 +1,6 @@
 # rename any file.JPG extension to file.jpg
+cd /Users/branweb/Desktop/elm_audio/src images
+
 for file in ../images/source/*.JPG
 do
  mv "$file" "${file%.JPG}.jpg"
@@ -15,3 +17,5 @@ do
     mv "$file" "${file%.jpg}_800.jpg"
   fi
 done
+
+cd -

@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
   template: path.join(__dirname, 'src', 'index.html'),
@@ -48,6 +49,22 @@ let myLoaders = [
   }
 ]
 
+const CopyWebpackPluginConfig = new CopyWebpackPlugin([
+  {
+    from: 'src/blurbs',
+    to: 'blurbs'
+  },
+  {
+    from: 'src/images',
+    ignore: ['.DS_Store', 'source/*.*'],
+    to: 'images'
+  },
+  {
+    from: 'src/melodies',
+    to: 'melodies'
+  }
+])
+
 if (process.env.NODE_ENV === 'production') {
   myLoaders = myLoaders.concat([
     {
@@ -62,7 +79,8 @@ if (process.env.NODE_ENV === 'production') {
   myPlugins = myPlugins.concat([
     ExtractTextPluginConfig,
     UglifyJsPluginConfig,
-    LoaderOptionsPluginConfig
+    LoaderOptionsPluginConfig,
+    CopyWebpackPluginConfig
   ])
 } else {
   myLoaders = myLoaders.concat([
