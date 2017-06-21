@@ -62,6 +62,15 @@ const CopyWebpackPluginConfig = new CopyWebpackPlugin([
   {
     from: 'src/melodies',
     to: 'melodies'
+  },
+  {
+    from: 'src/Procfile',
+    to: 'Procfile',
+    toType: 'file'
+  },
+  {
+    from: 'src/server.js',
+    to: 'server.js'
   }
 ])
 

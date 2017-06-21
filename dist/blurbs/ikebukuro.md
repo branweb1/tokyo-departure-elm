@@ -1,0 +1,1 @@
+Ikebukuro (which literally translates to *pond bag*) is the second busiest railway station in the world, serving over 2.7 million passengers daily. The surrounding neighborhood is home to the huge department stores *Tobu* and *Seibu*, each of which operates its own railway line that terminates at Ikebukuro station.
