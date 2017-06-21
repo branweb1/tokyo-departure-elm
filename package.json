@@ -14,12 +14,17 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "html-webpack-plugin": "^2.28.0",
     "postcss-loader": "^2.0.5",
+    "rimraf": "^2.6.1",
     "style-loader": "^0.17.0",
     "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"
   },
   "scripts": {
     "dev": "webpack-dev-server",
+    "clean": "yarn run remove && mkdir dist",
+    "remove": "rimraf ./dist",
+    "prebuild": "yarn run clean",
+    "server": "node ./dist/server.js",
     "build": "NODE_ENV=production webpack -p"
   },
   "dependencies": {
