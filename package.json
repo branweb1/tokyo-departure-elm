@@ -24,7 +24,7 @@
     "clean": "yarn run remove && mkdir dist",
     "remove": "rimraf ./dist",
     "prebuild": "yarn run clean",
-    "server": "node ./dist/server.js",
+    "server": "node server.js",
     "build": "NODE_ENV=production webpack -p"
   },
   "dependencies": {
