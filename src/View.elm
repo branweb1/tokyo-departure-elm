@@ -289,28 +289,15 @@ stationSoundDetails model =
         ]
 
 
-
--- TODO: delete this???vvvv
--- footerLinks : Model -> Html Msg
--- footerLinks model =
---     footer
---         []
---         [ a (routeAttrs model.route Stations "active") [ text "stations" ]
---         , a (routeAttrs model.route (StationDetails "1") "active") [ text "station" ]
---         , a (routeAttrs model.route Home "active") [ text "home" ]
---         , a (routeAttrs model.route NotFound "active") [ text "404 page" ]
---         ]
-
-
 view : Model -> Html Msg
 view model =
     div []
         [ header [ role "banner" ]
-            [ div [ class "logo-container" ]
-                [ a [ href "#/", onClick (GetBlurb (Just "_home.md")) ]
+            [ div [ class "header-contents" ]
+                [ a [ href "#/", onClick (GetBlurb (Just "_home.md")), class "logo" ]
                     [ text "logo here" ]
+                , h1 [ class "page-title" ] [ text "Tokyo Departure Melodies" ]
                 ]
-            , h1 [ class "page-title" ] [ text "Tokyo Departure Melodies" ]
             ]
         , section
             [ id "app-body" ]
