@@ -99,28 +99,48 @@ stations =
       , id = 0
       , blurb = Just "takada-no-baba.md"
       , image = Just "takada-no-baba-astro-boy_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "ajpscs"
+                , url = "https://www.flickr.com/photos/ajpscs/8514440882/in/photolist-dYoJCS-7d5MXE-6hgq7U-pWs7E-qeML7H-UJvfn7-xLiDq-dHWwWH-C3Y4LB-mb2UsM-9xKBVU-6gGQ1s-7ZhjXW-ztw7Y-RErvzG-9yuLan-fruXiq-t1X7g-mb29Ye-UHAtmW-bny3io-7b8rGU-8NFVhP-f6ny2H-9z1DWv-9GdFez-iBD8aN-e4Smqa-8Wehn-jUyJFV-dPAvHv-7bx48F-pbta5P-6EaFio-fVXXLz-9d5eN9-wNyBz9-6E6y54-8TEHF9-4CZLHB-7ALPAU-8e8xJm-cgs3dW-9Cw4ar-7cvvNA-p4NRuh-9DaZMe-66g573-7RJWgJ-5Ljfht"
+                , license = "Author Permission"
+                }
       }
     , { melody = Ebisu
       , displayName = "Ebisu"
       , id = 1
       , blurb = Just "ebisu.md"
       , image = Just "ebisu_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "agiawb"
+                , url = "https://www.flickr.com/photos/58032217@N00/108139890/in/photolist-ayfdS-3RL8uU-6mc6qd-f8Umk-nieAd1-bNts1R-4BZCVr-7tbxgT-TF8Qo1-bzz7Ho-6StQtw-8dqnSR-5G9Mrm-bxxaJY-4nqPej-8rGD61-8SYmaC-4BHmeN-b62hA-3341uk-ddDUN1-fhs4cC-5FaQJ5-bKta8H-awvTpn-RdtA48-P5S2B7-4yi3Kr-343BcT-Lho6-4C4VDW-awyCz5-awvScD-3cnEBu-eXXJg8-dq9yuD-7G7miD-8mUYu7-5Cu1nh-csjiAb-9UuCSf-48YLty-CdbUQp-338xaQ-338xWu-9Zt3VU-52qjLS-gHu9R1-6a7BAb-6Knpbr"
+                , license = "Author Permission"
+                }
       }
     , { melody = Spring
       , displayName = "Yoyogi"
       , id = 2
       , blurb = Just "yoyogi.md"
       , image = Just "yoyogi_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "alex"
+                , url = "https://www.flickr.com/photos/librarybook/15319046765/in/photolist-pkG7TX-qhW2FD-rfrwgb-8SZUzy-23mpoL-5wiSqT-47DizK-8njEtK-oQRdwA-hTsUiY-h8MLox-5m2avt-9h9pMR-o9THJr-4wq6jh-d7Zq91-GUTdh-pe7bT-9oE2e3-5RBKgx-81Zq6X-fjBWeC-oqDrXH-ajvPiP-arGRSD-qz9BD-ctdxaN-9oTRBL-nzhys-4XhoDR-sq1XHo-aagrVT-CY4JEw-7WN7K9-mEjR6-tLRp-69jRRq-9dsuTT-6JrZcH-7aNShP-auSHng-8Rr27W-9r4pqh-oLwpzA-4nor2b-nZywR-qhXfYB-di8t5E-c2gmHy-4aNnQv"
+                , license = "Author Permission"
+                }
       }
     , { melody = Harajuku
       , displayName = "Harajuku"
       , id = 3
       , blurb = Just "harajuku.md"
       , image = Just "harajuku_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "John Doe"
+                , url = "https://www.flickr.com/photos/blazingfire/4463878339/in/photolist-7NsxvD-qXDZAy-7yg687-7XNWHZ-5e7vCJ-wrJRx-rdixBU-dRwVdR-7JuSrZ-bsFQSE-bzvdMf-7WzUH5-8KDqhx-bDhPen-dXxFfH-dkN8Dy-6EWYvi-akGtYM-p4qE44-fLCSpP-cCu16-7vLo1w-HuH1Bs-RdWqVj-ctxEjW-9PSRQD-RQ47HZ-7PYEzr-7QDQR5-8ZtoD4-gJFqfZ-d5WR3-cd9Ndy-9PVGQ9-exX29Z-pZVyb4-T3svXq-aHt3Ge-TxWNZQ-aJzTAk-nwCiAB-6TrfAR-7Jjntk-NFPdmm-7vE2fR-qmaGkn-8ezobd-c3yfv3-fs6tWf-4BRWkd"
+                , license = "Author Permission"
+                }
       }
     , { melody = SH3
       , displayName = "Tokyo"
@@ -146,14 +166,24 @@ stations =
       , id = 6
       , blurb = Nothing
       , image = Just "kanda_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "ブルークレン アシュリー"
+                , url = "https://www.flickr.com/photos/haiiro/6309004406/in/photolist-aBvid3-b2E98K-b27ySa-8gxZv4-8Yjmj3-JDHvG-24x4Jj-JDGS5-JDJf7-7kmv4c-5GwkfG-4qP4Nt-9BguQC-33abG-JDJs2-JDHvJ-JDGS9-7Bj3qA-JDGS7-33abE-aLtMw8-JDJrR-6CaQaC-5P4s83-7Bf9qe-7Bf8We-381Uus-7Bf8uD-7Bf8J8-7Bf7fK-33abD-boNs2S-6MXC7y-7TQ5J-bBHmMk-7Bf92K-bGAQYr-3sKf43-ELQGG-37Wk1v-9gnCba-Tkhg1-TkhhE-7iDFQG-JDGSb-JDJrD-j1aMP-MEbxbn-6MTquT-9DgV6P"
+                , license = "Author Permission"
+                }
       }
     , { melody = CieloEstrellado
       , displayName = "Gotanda"
       , id = 7
       , blurb = Nothing
       , image = Just "gotanda_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "Andreas Jakob"
+                , url = "https://www.flickr.com/photos/107785646@N08/16473034215/in/photolist-r6EBai-54gM4T-5499xm-9XcGJC-4yVTG2-6k1314-4ohBzn-juYW-65huvx-naht6V-59qtEc-7JkiCk-B1v7AY-9Qkfa2-juYU-6k13NT-7NKf7J-5499Xf-ewt6QS-ewt6YS-5L3M6S-6k5dC7-5qR7nJ-AhkSQ8-CAp8yK-fMsmx9-6k5egY-86mPqk-6ry8QE-8awPSM-5mJfxN-Dt49Dm-qxBJWZ-eWRP1U-2VnssB-qxBJUz-4N5MiX-8tQTBx-5RFmn3-34mNbJ-7FS8dX-7LLqtE-SMjGrv-s6mie-6k11CV-j3RSxp-51yaJ1-6k13xM-ScjFfT-SVfp3Z"
+                , license = "Author Permission"
+                }
       }
     , { melody = BellB
       , displayName = "Ueno"
@@ -167,7 +197,12 @@ stations =
       , id = 9
       , blurb = Just "akihabara.md"
       , image = Just "akihabara_800.jpg"
-      , imageAttribution = Nothing
+      , imageAttribution =
+            Just
+                { author = "Sakak_Flickr"
+                , url = "https://www.flickr.com/photos/keisuke9498/33722402911/in/photolist-TnW8vR-UzwV8G-6ddBrv-ch2PJG-jU4NR6-9A1DpZ-mHjPAU-99b3fe-9K9YUE-dXKiZD-9A4Avo-9A1CZe-qk6ALX-91ei6v-ah3sNb-6DbCo6-91ei6r-9btjjY-wp6La-9A1B5Z-85AWMh-fvVguR-dQiqZP-9rqA88-9A1zun-36TSTd-UuByXk-q5ZbUX-9K78Rr-eYENR-bKTRav-t7ixz-bDjHFG-fCV7x-iUq9zp-5uro7v-9K9YnW-fscWtU-599CNm-utsYT-qjhu7c-9btjnQ-f4p83Z-9edHMj-kVJkhX-asbfs2-ETbhvC-qjhFUa-dvpHvo-4kJb49"
+                , license = "Author Permission"
+                }
       }
     , { melody = Twilight
       , displayName = "Shinjuku"
