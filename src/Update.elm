@@ -5,8 +5,7 @@ import Model exposing (Model, PlayStatus(..), PlayerDetails(..))
 import Routing exposing (Route(..))
 import Commands exposing (..)
 import Routing exposing (parseLocation)
-import Helpers exposing (validateQuery)
-import Helpers exposing (getById)
+import Helpers exposing (validateQuery, getById)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -92,6 +91,34 @@ update msg model =
 
                         _ ->
                             Nothing
+
+                fileName =
+                    case route of
+                        StationDetails stationId ->
+                            String.toInt stationId
+                                |> Result.toMaybe
+                                |> Maybe.andThen (\id -> getById model.stations id)
+                                |> Maybe.andThen (\station -> station.blurb)
+
+                        OrphanedMelodies ->
+                            Just "_orphaned.md"
+
+                        StationSounds ->
+                            Just "_sounds.md"
+
+                        Home ->
+                            Just "_home.md"
+
+                        _ ->
+                            Nothing
+
+                cmd =
+                    case fileName of
+                        Just name ->
+                            loadMarkdownFile name
+
+                        Nothing ->
+                            Cmd.none
             in
                 ( { model
                     | route = route
@@ -99,5 +126,5 @@ update msg model =
                     , details = NoDetails
                     , blurb = Nothing
                   }
-                , reset ()
+                , Cmd.batch [ cmd, reset () ]
                 )

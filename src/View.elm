@@ -84,21 +84,12 @@ melodyTime progress filename =
 
 miscList : Route -> Html Msg
 miscList current =
-    let
-        linkOneAttrs =
-            [ onClick (GetBlurb (Just "_orphaned.md")) ]
-                ++ (routeAttrs current OrphanedMelodies "underlined")
-
-        linkTwoAttrs =
-            [ onClick (GetBlurb (Just "_sounds.md")) ]
-                ++ (routeAttrs current StationSounds "underlined")
-    in
-        ul [ ariaLabelledby "misc-label" ]
-            [ li []
-                [ a linkOneAttrs [ text "Orphaned Melodies" ] ]
-            , li []
-                [ a linkTwoAttrs [ text "Station Sounds" ] ]
-            ]
+    ul [ ariaLabelledby "misc-label" ]
+        [ li []
+            [ a (routeAttrs current OrphanedMelodies "underlined") [ text "Orphaned Melodies" ] ]
+        , li []
+            [ a (routeAttrs current StationSounds "underlined") [ text "Station Sounds" ] ]
+        ]
 
 
 stationList : String -> Route -> List Station -> Html Msg
@@ -107,12 +98,10 @@ stationList query current stations =
         |> List.sortBy (\station -> station.displayName)
         |> List.map
             (\station ->
-                let
-                    attributes =
-                        [ onClick (GetBlurb station.blurb) ]
-                            ++ (routeAttrs current (StationDetails <| toString station.id) "underlined")
-                in
-                    li [] [ a attributes [ text station.displayName ] ]
+                li []
+                    [ a (routeAttrs current (StationDetails <| toString station.id) "underlined")
+                        [ text station.displayName ]
+                    ]
             )
         |> ul []
 

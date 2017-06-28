@@ -84,6 +84,17 @@ em {
 strong {
   font-weight: 600;
 }
+
+blockquote {
+  font-size: 1.2rem;
+  padding-left: 0.5em;
+  color: #999;
+}
+
+blockquote .entry {
+  font-weight: 600;
+  color: green;
+}
 /* LAYOUT */
 html {
   height: 100%;
