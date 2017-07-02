@@ -283,9 +283,9 @@ view model =
     div []
         [ header [ role "banner" ]
             [ div [ class "header-contents" ]
-                [ a [ href "#/", onClick (GetBlurb (Just "_home.md")), class "logo" ]
-                    [ text "logo here" ]
-                , h1 [ class "page-title" ] [ text "Tokyo Departure Melodies" ]
+                [ a [ href "#/", onClick (GetBlurb (Just "_home.md")) ]
+                    [ img [ src "images/logo.png", alt "logo", class "logo" ] [] ]
+                , h1 [ class "page-title" ] [ text "Tokyo Ekimelo" ]
                 ]
             ]
         , section
