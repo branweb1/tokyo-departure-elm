@@ -95,7 +95,7 @@ type alias MiscSound =
 stations : List Station
 stations =
     [ { melody = AstroBoyV2
-      , displayName = "Takada-no-Baba"
+      , displayName = "Takadanobaba"
       , id = 0
       , blurb = Just "takada-no-baba.md"
       , image = Just "takada-no-baba-astro-boy_800.jpg"
@@ -269,7 +269,7 @@ stations =
       , imageAttribution = Nothing
       }
     , { melody = SH21
-      , displayName = "Yūracuchō"
+      , displayName = "Yūrakuchō"
       , id = 17
       , blurb = Nothing
       , image = Just "yuracucho_800.jpg"
