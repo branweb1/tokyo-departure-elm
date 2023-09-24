@@ -1,1 +1,0 @@
-Shimbashi is a major business district of Tokyo. It is known mostly as a place for salarymen, fully of bars and restaurants catering to them.
